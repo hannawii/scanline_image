@@ -53,7 +53,11 @@ void main()
     modelPos = (gl_ModelViewMatrix * vec4(modelPos,1)).xyz;
 
 	// send the normal to the fragment shader
+<<<<<<< HEAD
 	normal = normalize((gl_NormalMatrix * normal).xyz);
+=======
+	normal = (gl_NormalMatrix * normal).xyz;
+>>>>>>> 1a2d680a24f459f47d09bacd8d1d24ddab53c763
 
     // pass the light source position to the fragment shader
     lightSourcePos = gl_LightSource[0].position.xyz;

@@ -66,7 +66,10 @@ float mCameraElevation;
 bool mesh = false; // draw mesh
 bool smooth = true; // smooth/flat shading for mesh
 bool normalMapping = true; // true=normalMapping, false=displacementMapping
+<<<<<<< HEAD
 bool proxyType=false; // false: use cylinder; true: use sphere
+=======
+>>>>>>> 1a2d680a24f459f47d09bacd8d1d24ddab53c763
 
 STTriangleMesh* gTriangleMesh = 0;
 STTriangleMesh* gManualTriangleMesh = 0;
@@ -144,8 +147,12 @@ void Setup()
     glEnable(GL_DEPTH_TEST);
 
     gTriangleMesh=new STTriangleMesh(meshOBJ);
+<<<<<<< HEAD
     if(proxyType) gTriangleMesh->CalculateTextureCoordinatesViaSphericalProxy();
 	else gTriangleMesh->CalculateTextureCoordinatesViaCylindricalProxy(-1,1,0,0,1);
+=======
+    gTriangleMesh->CalculateTextureCoordinates();
+>>>>>>> 1a2d680a24f459f47d09bacd8d1d24ddab53c763
 
     CreateYourOwnMesh();
 }
@@ -330,11 +337,14 @@ void KeyCallback(unsigned char key, int x, int y)
     case 'm': // switch between the mesh you create and the mesh from file
         mesh = !mesh;
         break;
+<<<<<<< HEAD
 	case 'p': //switch proxy type between sphere and cylinder
 		proxyType=!proxyType;
 		if(proxyType) gTriangleMesh->CalculateTextureCoordinatesViaSphericalProxy();
 		else gTriangleMesh->CalculateTextureCoordinatesViaCylindricalProxy(-1,1,0,0,1);
 		break;
+=======
+>>>>>>> 1a2d680a24f459f47d09bacd8d1d24ddab53c763
     case 'n': // switch between normalMapping and displacementMapping
         normalMapping = !normalMapping;
         break;
@@ -344,8 +354,12 @@ void KeyCallback(unsigned char key, int x, int y)
     case 'l': // do loop subdivision
         if(mesh){
             gTriangleMesh->LoopSubdivide();
+<<<<<<< HEAD
 			if(proxyType) gTriangleMesh->CalculateTextureCoordinatesViaSphericalProxy();
 			else gTriangleMesh->CalculateTextureCoordinatesViaCylindricalProxy(-1,1,0,0,1);
+=======
+            gTriangleMesh->CalculateTextureCoordinates();
+>>>>>>> 1a2d680a24f459f47d09bacd8d1d24ddab53c763
         }
         else
             gManualTriangleMesh->LoopSubdivide();
