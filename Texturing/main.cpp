@@ -28,9 +28,9 @@ std::string colorMap;
 std::string meshOBJ;
 
 // Light source attributes
-static float specularLight[] = {1.00, 1.00, 1.00, 1.0};
-static float ambientLight[]  = {0.20, 0.20, 0.20, 1.0};
-static float diffuseLight[]  = {1.00, 1.00, 1.00, 1.0};
+static float specularLight[] = {1.5, 1.5, 1.5, 1.5};
+static float ambientLight[]  = {0.60, 0.60, 0.60, 1.5};
+static float diffuseLight[]  = {1.20, 1.20, 1.20, 1.5};
 
 float lightPosition[] = {10.0f, 15.0f, 10.0f, 1.0f};
 
@@ -69,7 +69,7 @@ bool normalMapping = true; // true=normalMapping, false=displacementMapping
 bool proxyType=false; // false: use cylinder; true: use sphere
 
 STTriangleMesh* gTriangleMesh = 0;
-STTriangleMesh* gManualTriangleMesh = 0;
+STTriangleMesh* water = 0;
 
 int TesselationDepth = 100;
 
@@ -82,12 +82,12 @@ void resetCamera()
 
 void CreateYourOwnMesh()
 {
-    float leftX   = -2.0f;
+    float leftX   = -8.0f;
     float rightX  = -leftX;
     float nearZ   = -2.0f;
-    float farZ    = -nearZ;
+    float farZ    = 5.0f;
     
-    gManualTriangleMesh= new STTriangleMesh();
+    water= new STTriangleMesh();
     for (int i = 0; i < TesselationDepth+1; i++){
         for (int j = 0; j < TesselationDepth+1; j++) {
             float s0 = (float) i / (float) TesselationDepth;
@@ -95,7 +95,7 @@ void CreateYourOwnMesh()
             float t0 = (float) j / (float) TesselationDepth;
             float z0 = t0 * (farZ - nearZ) + nearZ;
 
-            gManualTriangleMesh->AddVertex(x0,(x0*x0+z0*z0)*0.0f,z0,s0,t0);
+            water->AddVertex(x0,(x0*x0+z0*z0)*0.0f,z0,s0,t0);
         }
     }
     for (int i = 0; i < TesselationDepth; i++){
@@ -104,11 +104,11 @@ void CreateYourOwnMesh()
             unsigned int id1=(i+1)*(TesselationDepth+1)+j;
             unsigned int id2=(i+1)*(TesselationDepth+1)+j+1;
             unsigned int id3=i*(TesselationDepth+1)+j+1;
-            gManualTriangleMesh->AddFace(id0,id2,id1);
-            gManualTriangleMesh->AddFace(id0,id3,id2);
+            water->AddFace(id0,id2,id1);
+            water->AddFace(id0,id3,id2);
         }
     }
-    gManualTriangleMesh->Build();
+    water->Build();
 }
 //
 // Initialize the application, loading all of the settings that
@@ -154,8 +154,8 @@ void CleanUp()
 {
     if(gTriangleMesh!=0)
         delete gTriangleMesh;
-    if(gManualTriangleMesh!=0)
-        delete gManualTriangleMesh;
+    if(water!=0)
+        delete water;
 }
 
 /**
@@ -244,15 +244,17 @@ void DisplayCallback()
         if(normalMapping){
             shader->SetUniform("displacementMapping", -1.0);
             shader->SetUniform("normalMapping", 1.0);
-			shader->SetUniform("colorMapping", -1.0);
+			shader->SetUniform("colorMapping", 1.0);
         }
         else{
             shader->SetUniform("displacementMapping", 1.0);
             shader->SetUniform("normalMapping", -1.0);
-			shader->SetUniform("colorMapping", -1.0);
+			shader->SetUniform("colorMapping", 1.0);
             shader->SetUniform("TesselationDepth", TesselationDepth);
         }
-        gManualTriangleMesh->Draw(smooth);
+        
+        glTranslatef(0.f, -1.5f, 0.f);
+        water->Draw(smooth);
     }
 
     shader->UnBind();
@@ -348,7 +350,7 @@ void KeyCallback(unsigned char key, int x, int y)
 			else gTriangleMesh->CalculateTextureCoordinatesViaCylindricalProxy(-1,1,0,0,1);
         }
         else
-            gManualTriangleMesh->LoopSubdivide();
+            water->LoopSubdivide();
         break;
 	case 'q':
 		exit(0);
@@ -423,8 +425,13 @@ void usage()
 
 int main(int argc, char** argv)
 {
-	if (argc != 7)
+	if (argc != 7) {
+        printf("%d", argc);
+        for (int i = 0; i < argc; i++) {
+            printf("%s\n", argv[i]);
+        }
 		usage();
+    }
 
 	vertexShader   = std::string(argv[1]);
 	fragmentShader = std::string(argv[2]);
