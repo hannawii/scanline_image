@@ -84,12 +84,8 @@ public:
     bool Build();
     bool BuildTopology();
     bool CalculateNormal();
-<<<<<<< HEAD
 	bool CalculateTextureCoordinatesViaSphericalProxy();
 	bool CalculateTextureCoordinatesViaCylindricalProxy(float h_min,float h_max,float center_x,float center_y,int axis_direction);
-=======
-	bool CalculateTextureCoordinates();
->>>>>>> 1a2d680a24f459f47d09bacd8d1d24ddab53c763
 
     STFace* NextAdjFace(STVertex *v, STFace *f);
     STFace* NextAdjFaceReverse(STVertex *v, STFace *f);

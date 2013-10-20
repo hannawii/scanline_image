@@ -191,25 +191,12 @@ bool STTriangleMesh::CalculateNormal()
     return true;
 }
 
-<<<<<<< HEAD
 bool STTriangleMesh::CalculateTextureCoordinatesViaSphericalProxy()
 {
 	for(unsigned int i=0;i<mFaces.size();i++){
 		STFace* face=mFaces[i];		
 		for(int v=0;v<3;v++){
 			STPoint3 point=face->v[v]->pt;
-=======
-bool STTriangleMesh::CalculateTextureCoordinates()
-{
-	float max_x=0;
-	float min_x=0;
-	for(unsigned int i=0;i<mFaces.size();i++){
-        STFace* face=mFaces[i];
-		for(int v=0;v<3;v++){
-			STPoint3 point=face->v[v]->pt;
-			if(point.x>max_x) max_x=point.x;
-			if(point.x<min_x) min_x=point.x;
->>>>>>> 1a2d680a24f459f47d09bacd8d1d24ddab53c763
 			float r=sqrt(pow(point.x,2)+pow(point.y,2)+pow(point.z,2));
 			float theta=(float)PI-acos(point.z/r);
 			float phi=atan2(point.y,point.x)+(float)PI;
@@ -222,7 +209,6 @@ bool STTriangleMesh::CalculateTextureCoordinates()
 		if(face->texPos[2].x-face->texPos[0].x>.5) face->texPos[2].x-=1;
 		else if(face->texPos[2].x-face->texPos[0].x<-.5) face->texPos[2].x+=1;
 	}
-<<<<<<< HEAD
 	return true;
 }
 
@@ -259,9 +245,6 @@ bool STTriangleMesh::CalculateTextureCoordinatesViaCylindricalProxy(float h_min,
 		if(face->texPos[2].x-face->texPos[0].x>.5) face->texPos[2].x-=1;
 		else if(face->texPos[2].x-face->texPos[0].x<-.5) face->texPos[2].x+=1;
 	}
-=======
-	
->>>>>>> 1a2d680a24f459f47d09bacd8d1d24ddab53c763
 	return true;
 }
 
