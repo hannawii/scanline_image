@@ -74,6 +74,7 @@ bool STTriangleMesh::Read(const std::string& filename)
     // Determine the right routine based on the file's extension.
     // The format-specific subroutines are each implemented in
     // a different file.
+    
     std::string ext = STGetExtension( filename );
     if (ext.compare("OBJ") == 0){
         std::ifstream in( filename.c_str(), std::ios::in );
@@ -94,7 +95,8 @@ bool STTriangleMesh::Read(const std::string& filename)
         char token[128];
         float x,y,z;
         int p1,p2,p3;
-        float m,n,t;
+        float u,v,w;
+        float m, n, t;
         while(in>>token){
             if(strcmp(token,"#")==0){
                 in.getline(comments,256);
@@ -108,12 +110,13 @@ bool STTriangleMesh::Read(const std::string& filename)
                 mFaces.push_back(new STFace(mVertices[p1-1],mVertices[p2-1],mVertices[p3-1]));
             }
             else if (strcmp(token, "vt") == 0) {
-                in>>m>>n>>t;
-                //mFaces.push_back(new STFace(mVertices[]));
+                in>>u>>v>>w;
             }
             else if (strcmp(token, "vn") == 0) {
+                in>>m>>n>>t;
                 
             }
+
         }
 
         return true;
