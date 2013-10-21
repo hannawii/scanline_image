@@ -45,6 +45,15 @@ static float shininess          = 8.0;  // # between 1 and 128.
 //static float material2Specular[] = { 1., 1., 1., 1. };
 //static float shininess2          = 1.;  // # between 1 and 128.
 
+STImage   *surfaceNormRock1Img;
+STTexture *surfaceNormRock1Tex;
+
+STImage   *surfaceDisplaceRock1Img;
+STTexture *surfaceDisplaceRock1Tex;
+
+STImage   *surfaceColorRock1Img;
+STTexture *surfaceColorRock1Tex;
+
 STImage   *surfaceNormSkyImg;
 STTexture *surfaceNormSkyTex;
 
@@ -65,6 +74,7 @@ STTexture *surfaceColorWaterTex;
 
 STShaderProgram *shaderWater;
 STShaderProgram *shaderSky;
+STShaderProgram *shaderRock1;
 
 // Stored mouse position for camera rotation, panning, and zoom.
 int gPreviousMouseX = -1;
@@ -185,6 +195,20 @@ void Setup()
     shaderSky = new STShaderProgram();
     shaderSky->LoadVertexShader(vertexShader);
     shaderSky->LoadFragmentShader(fragmentShader);
+    
+    
+    surfaceNormRock1Img = new STImage("images/sky.jpg");
+    surfaceNormRock1Tex = new STTexture(surfaceNormRock1Img);
+    
+    surfaceDisplaceRock1Img = new STImage("images/sky.jpg");
+    surfaceDisplaceRock1Tex = new STTexture(surfaceDisplaceRock1Img);
+    
+	surfaceColorRock1Img = new STImage("images/sky.jpg");
+    surfaceColorRock1Tex = new STTexture(surfaceColorRock1Img);
+    
+    shaderRock1 = new STShaderProgram();
+    shaderRock1->LoadVertexShader(vertexShader);
+    shaderRock1->LoadFragmentShader(fragmentShader);
 
     resetCamera();
     
@@ -326,9 +350,9 @@ void DisplayCallback()
 //    // shader programs on anything we draw.
 //    shaderSky->Bind();
 //    
-//    shaderWater->SetUniform("displacementMapping", -1.0);
-//    shaderWater->SetUniform("normalMapping", -1.0);
-//    shaderWater->SetUniform("colorMapping", 1.0);
+//    shaderSky->SetUniform("displacementMapping", -1.0);
+//    shaderSky->SetUniform("normalMapping", -1.0);
+//    shaderSky->SetUniform("colorMapping", 1.0);
 //    
 //    
 //    //sky->LoopSubdivide();
@@ -346,10 +370,49 @@ void DisplayCallback()
 //    glActiveTexture(GL_TEXTURE2);
 //    surfaceColorSkyTex->UnBind();
     
+    
+    // Texture 0: surface normal map
+    glActiveTexture(GL_TEXTURE0);
+    surfaceNormRock1Tex->Bind();
+    
+    // Texture 1: surface normal map
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceRock1Tex->Bind();
+    
+    // Texture 2: surface color map
+    glActiveTexture(GL_TEXTURE2);
+    surfaceColorRock1Tex->Bind();
+    
+    // Bind the textures we've loaded into openGl to
+    // the variable names we specify in the fragment
+    // shader.
+    shaderRock1->SetTexture("normalTex", 0);
+    shaderRock1->SetTexture("displacementTex", 1);
+    shaderRock1->SetTexture("colorTex", 2);
+    
+    // Invoke the shader.  Now OpenGL will call our
+    // shader programs on anything we draw.
+    shaderRock1->Bind();
+    
+    shaderRock1->SetUniform("displacementMapping", -1.0);
+    shaderRock1->SetUniform("normalMapping", -1.0);
+    shaderRock1->SetUniform("colorMapping", 1.0);
+    
     glPushMatrix();
     rockTransformations();
     rock1->Draw(smooth);
     glPopMatrix();
+    
+    shaderRock1->UnBind();
+    
+    glActiveTexture(GL_TEXTURE0);
+    surfaceNormRock1Tex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceRock1Tex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE2);
+    surfaceColorRock1Tex->UnBind();
 
     
     glutSwapBuffers();
