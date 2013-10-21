@@ -72,9 +72,19 @@ STTexture *surfaceDisplaceWaterTex;
 STImage   *surfaceColorWaterImg;
 STTexture *surfaceColorWaterTex;
 
+STImage   *surfaceNormMoonImg;
+STTexture *surfaceNormMoonTex;
+
+STImage   *surfaceDisplaceMoonImg;
+STTexture *surfaceDisplaceMoonTex;
+
+STImage   *surfaceColorMoonImg;
+STTexture *surfaceColorMoonTex;
+
 STShaderProgram *shaderWater;
 STShaderProgram *shaderSky;
 STShaderProgram *shaderRock1;
+STShaderProgram *shaderMoon;
 
 // Stored mouse position for camera rotation, panning, and zoom.
 int gPreviousMouseX = -1;
@@ -92,6 +102,7 @@ STTriangleMesh* gTriangleMesh = 0;
 STTriangleMesh* water = 0;
 STTriangleMesh* sky = 0;
 STTriangleMesh* rock1 = 0;
+STTriangleMesh* moon = 0;
 
 int TesselationDepth = 100;
 
@@ -209,6 +220,20 @@ void Setup()
     shaderRock1 = new STShaderProgram();
     shaderRock1->LoadVertexShader(vertexShader);
     shaderRock1->LoadFragmentShader(fragmentShader);
+    
+    
+    surfaceNormMoonImg = new STImage("images/rock1.jpg");
+    surfaceNormMoonTex = new STTexture(surfaceNormRock1Img);
+    
+    surfaceDisplaceMoonImg = new STImage("images/rock1.jpg");
+    surfaceDisplaceMoonTex = new STTexture(surfaceDisplaceRock1Img);
+    
+	surfaceColorMoonImg = new STImage("images/rock1.jpg");
+    surfaceColorMoonTex = new STTexture(surfaceColorRock1Img);
+    
+    shaderMoon = new STShaderProgram();
+    shaderMoon->LoadVertexShader(vertexShader);
+    shaderMoon->LoadFragmentShader(fragmentShader);
 
     resetCamera();
     
@@ -220,6 +245,8 @@ void Setup()
 	else gTriangleMesh->CalculateTextureCoordinatesViaCylindricalProxy(-1,1,0,0,1);
     rock1=new STTriangleMesh("meshes/rock1.obj");
     rock1->CalculateTextureCoordinatesViaSphericalProxy();
+    
+    moon = new STTriangleMesh("meshes/sphere_fine.obj");
     CreateYourOwnMesh();
 }
 
@@ -252,6 +279,10 @@ void AdjustCameraTranslationBy(STVector3 delta)
 void rockTransformations(){
     glTranslatef(0,-10, -40);
     
+}
+
+void moonTransformations(){
+    glTranslatef(0, 0, 0);
 }
 //
 // Display the output image from our vertex and fragment shaders
@@ -373,6 +404,50 @@ void DisplayCallback()
     
     // Texture 0: surface normal map
     glActiveTexture(GL_TEXTURE0);
+    surfaceNormMoonTex->Bind();
+    
+    // Texture 1: surface normal map
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceMoonTex->Bind();
+    
+    // Texture 2: surface color map
+    glActiveTexture(GL_TEXTURE2);
+    surfaceColorMoonTex->Bind();
+    
+    // Bind the textures we've loaded into openGl to
+    // the variable names we specify in the fragment
+    // shader.
+    shaderMoon->SetTexture("normalTex", 0);
+    shaderMoon->SetTexture("displacementTex", 1);
+    shaderMoon->SetTexture("colorTex", 2);
+    
+    // Invoke the shader.  Now OpenGL will call our
+    // shader programs on anything we draw.
+    shaderMoon->Bind();
+    
+    shaderMoon->SetUniform("displacementMapping", 1.0);
+    shaderMoon->SetUniform("normalMapping", -1.0);
+    shaderMoon->SetUniform("colorMapping", 1.0);
+    
+    glPushMatrix();
+    moonTransformations();
+    moon->Draw(smooth);
+    glPopMatrix();
+    
+    shaderMoon->UnBind();
+    
+    glActiveTexture(GL_TEXTURE0);
+    surfaceNormMoonTex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceMoonTex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE2);
+    surfaceColorMoonTex->UnBind();
+    
+    
+    // Texture 0: surface normal map
+    glActiveTexture(GL_TEXTURE0);
     surfaceNormRock1Tex->Bind();
     
     // Texture 1: surface normal map
@@ -394,8 +469,8 @@ void DisplayCallback()
     // shader programs on anything we draw.
     shaderRock1->Bind();
     
-    shaderRock1->SetUniform("displacementMapping", -1.0);
-    shaderRock1->SetUniform("normalMapping", 1.0);
+    shaderRock1->SetUniform("displacementMapping", 1.0);
+    shaderRock1->SetUniform("normalMapping", -1.0);
     shaderRock1->SetUniform("colorMapping", 1.0);
     
     glPushMatrix();
