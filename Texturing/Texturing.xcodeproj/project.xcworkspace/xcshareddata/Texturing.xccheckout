@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7FDA1026-2612-42A0-A497-579C9C5B94EF</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Texturing</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E3AD17B0-B1C9-4761-987A-580EAB78C112</key>
+		<string>https://github.com/hannawii/scanline_image</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Texturing/Texturing.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E3AD17B0-B1C9-4761-987A-580EAB78C112</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/hannawii/scanline_image</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E3AD17B0-B1C9-4761-987A-580EAB78C112</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E3AD17B0-B1C9-4761-987A-580EAB78C112</string>
+			<key>IDESourceControlWCCName</key>
+			<string>scanline_image</string>
+		</dict>
+	</array>
+</dict>
+</plist>

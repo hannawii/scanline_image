@@ -28,9 +28,9 @@ std::string colorMap;
 std::string meshOBJ;
 
 // Light source attributes
-static float specularLight[] = {1.5, 1.5, 1.5, 1.0};
-static float ambientLight[]  = {0.90, 0.90, 0.90, 1.0};
-static float diffuseLight[]  = {1.20, 1.20, 1.20, 1.0};
+static float specularLight[] = {1.5, 1.5, 1.5, 1.5};
+static float ambientLight[]  = {0.60, 0.60, 0.60, 1.5};
+static float diffuseLight[]  = {1.20, 1.20, 1.20, 1.5};
 
 float lightPosition[] = {10.0f, 15.0f, 10.0f, 1.0f};
 
@@ -40,31 +40,21 @@ static float materialDiffuse[]  = { 0.2, 0.2, 0.6, 1.0 };
 static float materialSpecular[] = { 0.8, 0.8, 0.8, 1.0 };
 static float shininess          = 8.0;  // # between 1 and 128.
 
-//static float material2Ambient[]  = { 1., 1., 1., 1. };
-//static float material2Diffuse[]  = { 1., 1., 1., 1. };
-//static float material2Specular[] = { 1., 1., 1., 1. };
-//static float shininess2          = 1.;  // # between 1 and 128.
+static float material2Ambient[]  = { 1., 1., 1., 1. };
+static float material2Diffuse[]  = { 1., 1., 1., 1. };
+static float material2Specular[] = { 1., 1., 1., 1. };
+static float shininess2          = 1.;  // # between 1 and 128.
 
-STImage   *surfaceNormSkyImg;
-STTexture *surfaceNormSkyTex;
+STImage   *surfaceNormImg;
+STTexture *surfaceNormTex;
 
-STImage   *surfaceDisplaceSkyImg;
-STTexture *surfaceDisplaceSkyTex;
+STImage   *surfaceDisplaceImg;
+STTexture *surfaceDisplaceTex;
 
-STImage   *surfaceColorSkyImg;
-STTexture *surfaceColorSkyTex;
+STImage   *surfaceColorImg;
+STTexture *surfaceColorTex;
 
-STImage   *surfaceNormWaterImg;
-STTexture *surfaceNormWaterTex;
-
-STImage   *surfaceDisplaceWaterImg;
-STTexture *surfaceDisplaceWaterTex;
-
-STImage   *surfaceColorWaterImg;
-STTexture *surfaceColorWaterTex;
-
-STShaderProgram *shaderWater;
-STShaderProgram *shaderSky;
+STShaderProgram *shader;
 
 // Stored mouse position for camera rotation, panning, and zoom.
 int gPreviousMouseX = -1;
@@ -80,8 +70,6 @@ bool proxyType=false; // false: use cylinder; true: use sphere
 
 STTriangleMesh* gTriangleMesh = 0;
 STTriangleMesh* water = 0;
-STTriangleMesh* sky = 0;
-STTriangleMesh* rock1 = 0;
 
 int TesselationDepth = 100;
 
@@ -121,28 +109,6 @@ void CreateYourOwnMesh()
         }
     }
     water->Build();
-    
-    sky = new STTriangleMesh();
-    
-    float bottomY = 0.f;
-    float topY = 5.5f;
-    float Z = -2.0f;
-
-    
-    sky->AddVertex(leftX, topY, Z);
-    sky->AddVertex(leftX, bottomY, Z);
-    sky->AddVertex((leftX + rightX) / 2, topY, Z);
-    sky->AddVertex((leftX + rightX) / 2, bottomY, Z);
-    sky->AddVertex(rightX, topY, Z);
-    sky->AddVertex(rightX, bottomY, Z);
-    
-    sky->AddFace(0, 1, 2);
-    sky->AddFace(2, 1, 3);
-    sky->AddFace(2, 4, 3);
-    sky->AddFace(3, 4, 5);
-
-    sky->Build();
-    
 }
 //
 // Initialize the application, loading all of the settings that
@@ -159,32 +125,18 @@ void Setup()
     glLightfv(GL_LIGHT0, GL_AMBIENT,   ambientLight);
     glLightfv(GL_LIGHT0, GL_DIFFUSE,   diffuseLight);
 
-    surfaceNormWaterImg = new STImage("images/water1.jpg");
-    surfaceNormWaterTex = new STTexture(surfaceNormWaterImg);
+    surfaceNormImg = new STImage(normalMap);
+    surfaceNormTex = new STTexture(surfaceNormImg);
     
-    surfaceDisplaceWaterImg = new STImage("images/water1.jpg");
-    surfaceDisplaceWaterTex = new STTexture(surfaceDisplaceWaterImg);
+    surfaceDisplaceImg = new STImage(displacementMap);
+    surfaceDisplaceTex = new STTexture(surfaceDisplaceImg);
 
-	surfaceColorWaterImg = new STImage("images/deep_blue.jpg");
-    surfaceColorWaterTex = new STTexture(surfaceColorWaterImg);
+	surfaceColorImg = new STImage(colorMap);
+    surfaceColorTex = new STTexture(surfaceColorImg);
     
-    shaderWater = new STShaderProgram();
-    shaderWater->LoadVertexShader(vertexShader);
-    shaderWater->LoadFragmentShader(fragmentShader);
-    
-    
-    surfaceNormSkyImg = new STImage("images/water1.jpg");
-    surfaceNormSkyTex = new STTexture(surfaceNormSkyImg);
-    
-    surfaceDisplaceSkyImg = new STImage("images/water1.jpg");
-    surfaceDisplaceSkyTex = new STTexture(surfaceDisplaceSkyImg);
-    
-	surfaceColorSkyImg = new STImage("images/deep_blue.jpg");
-    surfaceColorSkyTex = new STTexture(surfaceColorSkyImg);
-    
-    shaderSky = new STShaderProgram();
-    shaderSky->LoadVertexShader(vertexShader);
-    shaderSky->LoadFragmentShader(fragmentShader);
+    shader = new STShaderProgram();
+    shader->LoadVertexShader(vertexShader);
+    shader->LoadFragmentShader(fragmentShader);
 
     resetCamera();
     
@@ -194,8 +146,7 @@ void Setup()
     gTriangleMesh=new STTriangleMesh(meshOBJ);
     if(proxyType) gTriangleMesh->CalculateTextureCoordinatesViaSphericalProxy();
 	else gTriangleMesh->CalculateTextureCoordinatesViaCylindricalProxy(-1,1,0,0,1);
-    rock1=new STTriangleMesh("meshes/rock1.obj");
-    rock1->CalculateTextureCoordinatesViaSphericalProxy();
+
     CreateYourOwnMesh();
 }
 
@@ -225,10 +176,6 @@ void AdjustCameraTranslationBy(STVector3 delta)
     mCameraTranslation += delta;
 }
 
-void rockTransformations(){
-    glTranslatef(0,-10, -40);
-    
-}
 //
 // Display the output image from our vertex and fragment shaders
 //
@@ -250,107 +197,76 @@ void DisplayCallback()
 
     // Texture 0: surface normal map
     glActiveTexture(GL_TEXTURE0);
-    surfaceNormWaterTex->Bind();
+    surfaceNormTex->Bind();
     
     // Texture 1: surface normal map
     glActiveTexture(GL_TEXTURE1);
-    surfaceDisplaceWaterTex->Bind();
+    surfaceDisplaceTex->Bind();
 
 	// Texture 2: surface color map
     glActiveTexture(GL_TEXTURE2);
-    surfaceColorWaterTex->Bind();
+    surfaceColorTex->Bind();
     
     // Bind the textures we've loaded into openGl to
     // the variable names we specify in the fragment
     // shader.
-    shaderWater->SetTexture("normalTex", 0);
-    shaderWater->SetTexture("displacementTex", 1);
-	shaderWater->SetTexture("colorTex", 2);
+    shader->SetTexture("normalTex", 0);
+    shader->SetTexture("displacementTex", 1);
+	shader->SetTexture("colorTex", 2);
     
     // Invoke the shader.  Now OpenGL will call our
     // shader programs on anything we draw.
-    shaderWater->Bind();
+    shader->Bind();
     
-    glMaterialfv(GL_FRONT, GL_AMBIENT,   materialAmbient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE,   materialDiffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR,  materialSpecular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
-    
-    if(normalMapping){
-        shaderWater->SetUniform("displacementMapping", -1.0);
-        shaderWater->SetUniform("normalMapping", 1.0);
-        shaderWater->SetUniform("colorMapping", 1.0);
-    }
-    else{
-        shaderWater->SetUniform("displacementMapping", 1.0);
-        shaderWater->SetUniform("normalMapping", -1.0);
-        shaderWater->SetUniform("colorMapping", 1.0);
-        shaderWater->SetUniform("TesselationDepth", TesselationDepth);
-    }
-    
-    glTranslatef(0.f, -1.5f, 0.f);
-    //water->Draw(smooth);
-        
-    shaderWater->UnBind();
-        
-    glActiveTexture(GL_TEXTURE0);
-    surfaceNormWaterTex->UnBind();
-        
-    glActiveTexture(GL_TEXTURE1);
-    surfaceDisplaceWaterTex->UnBind();
-        
-    glActiveTexture(GL_TEXTURE2);
-    surfaceColorWaterTex->UnBind();
-    
-    
-//    // Texture 0: surface normal map
-//    glActiveTexture(GL_TEXTURE0);
-//    surfaceNormSkyTex->Bind();
-//    
-//    // Texture 1: surface normal map
-//    glActiveTexture(GL_TEXTURE1);
-//    surfaceDisplaceSkyTex->Bind();
-//    
-//    // Texture 2: surface color map
-//    glActiveTexture(GL_TEXTURE2);
-//    surfaceColorSkyTex->Bind();
-//    
-//    // Bind the textures we've loaded into openGl to
-//    // the variable names we specify in the fragment
-//    // shader.
-//    shaderSky->SetTexture("normalTex", 0);
-//    shaderSky->SetTexture("displacementTex", 1);
-//    shaderSky->SetTexture("colorTex", 2);
-//    
-//    // Invoke the shader.  Now OpenGL will call our
-//    // shader programs on anything we draw.
-//    shaderSky->Bind();
-//    
-//    shaderWater->SetUniform("displacementMapping", -1.0);
-//    shaderWater->SetUniform("normalMapping", -1.0);
-//    shaderWater->SetUniform("colorMapping", 1.0);
-//    
-//    
-//    //sky->LoopSubdivide();
-//    sky->Draw(smooth);
-//    
-//    
-//    shaderSky->UnBind();
-//    
-//    glActiveTexture(GL_TEXTURE0);
-//    surfaceNormSkyTex->UnBind();
-//    
-//    glActiveTexture(GL_TEXTURE1);
-//    surfaceDisplaceSkyTex->UnBind();
-//    
-//    glActiveTexture(GL_TEXTURE2);
-//    surfaceColorSkyTex->UnBind();
-    
-    glPushMatrix();
-    rockTransformations();
-    rock1->Draw(smooth);
-    glPopMatrix();
+    if(mesh)
+    {
+		//change the material to be white color for texturing the world map on the sphere
+		//if you do not want to change the material color, you do not need to put glMaterialfv functions here.
+		glMaterialfv(GL_FRONT, GL_AMBIENT,   material2Ambient);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE,   material2Diffuse);
+        glMaterialfv(GL_FRONT, GL_SPECULAR,  material2Specular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, &shininess2);
 
+        shader->SetUniform("normalMapping", -1.0);
+        shader->SetUniform("displacementMapping", -1.0);
+		shader->SetUniform("colorMapping", 1.0);
+        gTriangleMesh->Draw(smooth);
+    }
+    else
+    {
+        // Ditto with accessing material properties in the fragment
+        // and vertex shaders.
+        glMaterialfv(GL_FRONT, GL_AMBIENT,   materialAmbient);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE,   materialDiffuse);
+        glMaterialfv(GL_FRONT, GL_SPECULAR,  materialSpecular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
+        
+        if(normalMapping){
+            shader->SetUniform("displacementMapping", -1.0);
+            shader->SetUniform("normalMapping", 1.0);
+			shader->SetUniform("colorMapping", 1.0);
+        }
+        else{
+            shader->SetUniform("displacementMapping", 1.0);
+            shader->SetUniform("normalMapping", -1.0);
+			shader->SetUniform("colorMapping", 1.0);
+            shader->SetUniform("TesselationDepth", TesselationDepth);
+        }
+        
+        glTranslatef(0.f, -1.5f, 0.f);
+        water->Draw(smooth);
+    }
+
+    shader->UnBind();
+    
+    glActiveTexture(GL_TEXTURE0);
+    surfaceNormTex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceTex->UnBind();
+
+	glActiveTexture(GL_TEXTURE2);
+    surfaceColorTex->UnBind();
     
     glutSwapBuffers();
 }
@@ -445,6 +361,61 @@ void KeyCallback(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
+/**
+ * Mouse event handler
+ */
+void MouseCallback(int button, int state, int x, int y)
+{
+    if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON)
+    {
+        gMouseButton = button;
+    } else
+    {
+        gMouseButton = -1;
+    }
+    
+    if (state == GLUT_UP)
+    {
+        gPreviousMouseX = -1;
+        gPreviousMouseY = -1;
+    }
+}
+
+/**
+ * Mouse active motion callback (when button is pressed)
+ */
+void MouseMotionCallback(int x, int y)
+{
+    if (gPreviousMouseX >= 0 && gPreviousMouseY >= 0)
+    {
+        //compute delta
+        float deltaX = x-gPreviousMouseX;
+        float deltaY = y-gPreviousMouseY;
+        gPreviousMouseX = x;
+        gPreviousMouseY = y;
+        
+        float zoomSensitivity = 0.2f;
+        float rotateSensitivity = 0.5f;
+        
+        //orbit or zoom
+        if (gMouseButton == GLUT_LEFT_BUTTON)
+        {
+            AdjustCameraAzimuthBy(-deltaX*rotateSensitivity);
+            AdjustCameraElevationBy(-deltaY*rotateSensitivity);
+            
+        } else if (gMouseButton == GLUT_RIGHT_BUTTON)
+        {
+            STVector3 zoom(0,0,deltaX);
+            AdjustCameraTranslationBy(zoom * zoomSensitivity);
+        }
+        
+    } else
+    {
+        gPreviousMouseX = x;
+        gPreviousMouseY = y;
+    }
+    
+}
 
 void usage()
 {
@@ -506,6 +477,8 @@ int main(int argc, char** argv)
     glutReshapeFunc(ReshapeCallback);
     glutSpecialFunc(SpecialKeyCallback);
     glutKeyboardFunc(KeyCallback);
+    glutMouseFunc(MouseCallback);
+    glutMotionFunc(MouseMotionCallback);
     glutIdleFunc(DisplayCallback);
 
     glutMainLoop();
@@ -515,60 +488,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
-
-/**
- * Mouse event handler
- */
-//void MouseCallback(int button, int state, int x, int y)
-//{
-//    if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON)
-//    {
-//        gMouseButton = button;
-//    } else
-//    {
-//        gMouseButton = -1;
-//    }
-//
-//    if (state == GLUT_UP)
-//    {
-//        gPreviousMouseX = -1;
-//        gPreviousMouseY = -1;
-//    }
-//}
-//
-///**
-// * Mouse active motion callback (when button is pressed)
-// */
-//void MouseMotionCallback(int x, int y)
-//{
-//    if (gPreviousMouseX >= 0 && gPreviousMouseY >= 0)
-//    {
-//        //compute delta
-//        float deltaX = x-gPreviousMouseX;
-//        float deltaY = y-gPreviousMouseY;
-//        gPreviousMouseX = x;
-//        gPreviousMouseY = y;
-//
-//        float zoomSensitivity = 0.2f;
-//        float rotateSensitivity = 0.5f;
-//
-//        //orbit or zoom
-//        if (gMouseButton == GLUT_LEFT_BUTTON)
-//        {
-//            AdjustCameraAzimuthBy(-deltaX*rotateSensitivity);
-//            AdjustCameraElevationBy(-deltaY*rotateSensitivity);
-//
-//        } else if (gMouseButton == GLUT_RIGHT_BUTTON)
-//        {
-//            STVector3 zoom(0,0,deltaX);
-//            AdjustCameraTranslationBy(zoom * zoomSensitivity);
-//        }
-//
-//    } else
-//    {
-//        gPreviousMouseX = x;
-//        gPreviousMouseY = y;
-//    }
-//
-//}

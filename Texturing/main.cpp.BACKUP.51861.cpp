@@ -40,10 +40,10 @@ static float materialDiffuse[]  = { 0.2, 0.2, 0.6, 1.0 };
 static float materialSpecular[] = { 0.8, 0.8, 0.8, 1.0 };
 static float shininess          = 8.0;  // # between 1 and 128.
 
-//static float material2Ambient[]  = { 1., 1., 1., 1. };
-//static float material2Diffuse[]  = { 1., 1., 1., 1. };
-//static float material2Specular[] = { 1., 1., 1., 1. };
-//static float shininess2          = 1.;  // # between 1 and 128.
+static float material2Ambient[]  = { 1., 1., 1., 1. };
+static float material2Diffuse[]  = { 1., 1., 1., 1. };
+static float material2Specular[] = { 1., 1., 1., 1. };
+static float shininess2          = 1.;  // # between 1 and 128.
 
 STImage   *surfaceNormSkyImg;
 STTexture *surfaceNormSkyTex;
@@ -80,8 +80,11 @@ bool proxyType=false; // false: use cylinder; true: use sphere
 
 STTriangleMesh* gTriangleMesh = 0;
 STTriangleMesh* water = 0;
+<<<<<<< HEAD
 STTriangleMesh* sky = 0;
+=======
 STTriangleMesh* rock1 = 0;
+>>>>>>> a847a2a39f0fb446ded40cf27d41ecc49cc20e01
 
 int TesselationDepth = 100;
 
@@ -277,80 +280,147 @@ void DisplayCallback()
     glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
     
     if(normalMapping){
-        shaderWater->SetUniform("displacementMapping", -1.0);
-        shaderWater->SetUniform("normalMapping", 1.0);
-        shaderWater->SetUniform("colorMapping", 1.0);
+        shader->SetUniform("displacementMapping", -1.0);
+        shader->SetUniform("normalMapping", 1.0);
+        shader->SetUniform("colorMapping", 1.0);
     }
     else{
-        shaderWater->SetUniform("displacementMapping", 1.0);
-        shaderWater->SetUniform("normalMapping", -1.0);
-        shaderWater->SetUniform("colorMapping", 1.0);
-        shaderWater->SetUniform("TesselationDepth", TesselationDepth);
+        shader->SetUniform("displacementMapping", 1.0);
+        shader->SetUniform("normalMapping", -1.0);
+        shader->SetUniform("colorMapping", 1.0);
+        shader->SetUniform("TesselationDepth", TesselationDepth);
     }
     
     glTranslatef(0.f, -1.5f, 0.f);
     //water->Draw(smooth);
-        
-    shaderWater->UnBind();
-        
-    glActiveTexture(GL_TEXTURE0);
-    surfaceNormWaterTex->UnBind();
-        
-    glActiveTexture(GL_TEXTURE1);
-    surfaceDisplaceWaterTex->UnBind();
-        
-    glActiveTexture(GL_TEXTURE2);
-    surfaceColorWaterTex->UnBind();
-    
-    
-//    // Texture 0: surface normal map
-//    glActiveTexture(GL_TEXTURE0);
-//    surfaceNormSkyTex->Bind();
-//    
-//    // Texture 1: surface normal map
-//    glActiveTexture(GL_TEXTURE1);
-//    surfaceDisplaceSkyTex->Bind();
-//    
-//    // Texture 2: surface color map
-//    glActiveTexture(GL_TEXTURE2);
-//    surfaceColorSkyTex->Bind();
-//    
-//    // Bind the textures we've loaded into openGl to
-//    // the variable names we specify in the fragment
-//    // shader.
-//    shaderSky->SetTexture("normalTex", 0);
-//    shaderSky->SetTexture("displacementTex", 1);
-//    shaderSky->SetTexture("colorTex", 2);
-//    
-//    // Invoke the shader.  Now OpenGL will call our
-//    // shader programs on anything we draw.
-//    shaderSky->Bind();
-//    
-//    shaderWater->SetUniform("displacementMapping", -1.0);
-//    shaderWater->SetUniform("normalMapping", -1.0);
-//    shaderWater->SetUniform("colorMapping", 1.0);
-//    
-//    
-//    //sky->LoopSubdivide();
-//    sky->Draw(smooth);
-//    
-//    
-//    shaderSky->UnBind();
-//    
-//    glActiveTexture(GL_TEXTURE0);
-//    surfaceNormSkyTex->UnBind();
-//    
-//    glActiveTexture(GL_TEXTURE1);
-//    surfaceDisplaceSkyTex->UnBind();
-//    
-//    glActiveTexture(GL_TEXTURE2);
-//    surfaceColorSkyTex->UnBind();
-    
+
     glPushMatrix();
     rockTransformations();
     rock1->Draw(smooth);
     glPopMatrix();
+    
 
+		//change the material to be white color for texturing the world map on the sphere
+		//if you do not want to change the material color, you do not need to put glMaterialfv functions here.
+		glMaterialfv(GL_FRONT, GL_AMBIENT,   material2Ambient);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE,   material2Diffuse);
+        glMaterialfv(GL_FRONT, GL_SPECULAR,  material2Specular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, &shininess2);
+
+<<<<<<< HEAD
+        shaderWater->SetUniform("normalMapping", -1.0);
+        shaderWater->SetUniform("displacementMapping", -1.0);
+		shaderWater->SetUniform("colorMapping", 1.0);
+        gTriangleMesh->Draw(smooth);
+        
+        shaderWater->UnBind();
+        
+        glActiveTexture(GL_TEXTURE0);
+        surfaceNormWaterTex->UnBind();
+        
+        glActiveTexture(GL_TEXTURE1);
+        surfaceDisplaceWaterTex->UnBind();
+        
+        glActiveTexture(GL_TEXTURE2);
+        surfaceColorWaterTex->UnBind();
+    }
+    else
+    {
+        // Ditto with accessing material properties in the fragment
+        // and vertex shaders.
+        glMaterialfv(GL_FRONT, GL_AMBIENT,   materialAmbient);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE,   materialDiffuse);
+        glMaterialfv(GL_FRONT, GL_SPECULAR,  materialSpecular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
+        
+        if(normalMapping){
+            shaderWater->SetUniform("displacementMapping", -1.0);
+            shaderWater->SetUniform("normalMapping", 1.0);
+			shaderWater->SetUniform("colorMapping", 1.0);
+        }
+        else{
+            shaderWater->SetUniform("displacementMapping", 1.0);
+            shaderWater->SetUniform("normalMapping", -1.0);
+			shaderWater->SetUniform("colorMapping", 1.0);
+            shaderWater->SetUniform("TesselationDepth", TesselationDepth);
+        }
+        
+        glTranslatef(0.f, -1.5f, 0.f);
+        water->Draw(smooth);
+        
+        shaderWater->UnBind();
+        
+        glActiveTexture(GL_TEXTURE0);
+        surfaceNormWaterTex->UnBind();
+        
+        glActiveTexture(GL_TEXTURE1);
+        surfaceDisplaceWaterTex->UnBind();
+        
+        glActiveTexture(GL_TEXTURE2);
+        surfaceColorWaterTex->UnBind();
+        
+        
+        
+        // Texture 0: surface normal map
+        glActiveTexture(GL_TEXTURE0);
+        surfaceNormSkyTex->Bind();
+        
+        // Texture 1: surface normal map
+        glActiveTexture(GL_TEXTURE1);
+        surfaceDisplaceSkyTex->Bind();
+        
+        // Texture 2: surface color map
+        glActiveTexture(GL_TEXTURE2);
+        surfaceColorSkyTex->Bind();
+        
+        // Bind the textures we've loaded into openGl to
+        // the variable names we specify in the fragment
+        // shader.
+        shaderSky->SetTexture("normalTex", 0);
+        shaderSky->SetTexture("displacementTex", 1);
+        shaderSky->SetTexture("colorTex", 2);
+        
+        // Invoke the shader.  Now OpenGL will call our
+        // shader programs on anything we draw.
+        shaderSky->Bind();
+        
+        shaderWater->SetUniform("displacementMapping", -1.0);
+        shaderWater->SetUniform("normalMapping", -1.0);
+        shaderWater->SetUniform("colorMapping", 1.0);
+        
+        
+        //sky->LoopSubdivide();
+        sky->Draw(smooth);
+        
+        
+        shaderSky->UnBind();
+        
+        glActiveTexture(GL_TEXTURE0);
+        surfaceNormSkyTex->UnBind();
+        
+        glActiveTexture(GL_TEXTURE1);
+        surfaceDisplaceSkyTex->UnBind();
+        
+        glActiveTexture(GL_TEXTURE2);
+        surfaceColorSkyTex->UnBind();
+    }
+=======
+        shader->SetUniform("normalMapping", -1.0);
+        shader->SetUniform("displacementMapping", -1.0);
+		shader->SetUniform("colorMapping", 1.0);
+        //gTriangleMesh->Draw(smooth);
+>>>>>>> a847a2a39f0fb446ded40cf27d41ecc49cc20e01
+
+//    shaderWater->UnBind();
+//    
+//    glActiveTexture(GL_TEXTURE0);
+//    surfaceNormWaterTex->UnBind();
+//    
+//    glActiveTexture(GL_TEXTURE1);
+//    surfaceDisplaceWaterTex->UnBind();
+//
+//	glActiveTexture(GL_TEXTURE2);
+//    surfaceColorWaterTex->UnBind();
     
     glutSwapBuffers();
 }
