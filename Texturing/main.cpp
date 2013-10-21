@@ -36,7 +36,7 @@ float lightPosition[] = {10.0f, 15.0f, 10.0f, 1.0f};
 
 // Material color properties
 static float materialAmbient[]  = { 0.2, 0.2, 0.2, 1.0 };
-static float materialDiffuse[]  = { 0.2, 0.2, 0.2, 1.0 };
+static float materialDiffuse[]  = { 0.7, 0.7, 0.7, 0.4 };
 static float materialSpecular[] = { 0.8, 0.8, 0.8, 1.0 };
 static float shininess          = 8.0;  // # between 1 and 128.
 
@@ -85,10 +85,24 @@ STTexture *surfaceDisplaceMoonTex;
 STImage   *surfaceColorMoonImg;
 STTexture *surfaceColorMoonTex;
 
+//island
+STImage   *surfaceNormIslandImg;
+STTexture *surfaceNormIslandTex;
+
+STImage *surfaceColorIslandImg;
+STTexture *surfaceColorIslandTex;
+
+STImage   *surfaceDisplaceIslandImg;
+STTexture *surfaceDisplaceIslandTex;
+
+
+//shaders
 STShaderProgram *shaderWater;
 STShaderProgram *shaderSky;
 STShaderProgram *shaderRock1;
 STShaderProgram *shaderMoon;
+STShaderProgram *shaderIsland;
+
 
 // Stored mouse position for camera rotation, panning, and zoom.
 int gPreviousMouseX = -1;
@@ -107,6 +121,7 @@ STTriangleMesh* water = 0;
 STTriangleMesh* sky = 0;
 STTriangleMesh* rock1 = 0;
 STTriangleMesh* moon = 0;
+STTriangleMesh* island = 0;
 
 int TesselationDepth = 100;
 
@@ -147,27 +162,6 @@ void CreateYourOwnMesh()
     }
     water->Build();
     
-    sky = new STTriangleMesh();
-    
-    float bottomY = 0.f;
-    float topY = 5.5f;
-    float Z = -2.0f;
-
-    
-    sky->AddVertex(leftX, topY, Z);
-    sky->AddVertex(leftX, bottomY, Z);
-    sky->AddVertex((leftX + rightX) / 2, topY, Z);
-    sky->AddVertex((leftX + rightX) / 2, bottomY, Z);
-    sky->AddVertex(rightX, topY, Z);
-    sky->AddVertex(rightX, bottomY, Z);
-    
-    sky->AddFace(0, 1, 2);
-    sky->AddFace(2, 1, 3);
-    sky->AddFace(2, 4, 3);
-    sky->AddFace(3, 4, 5);
-
-    sky->Build();
-    
 }
 //
 // Initialize the application, loading all of the settings that
@@ -204,7 +198,7 @@ void Setup()
     surfaceDisplaceSkyImg = new STImage("images/sky.jpg");
     surfaceDisplaceSkyTex = new STTexture(surfaceDisplaceSkyImg);
     
-	surfaceColorSkyImg = new STImage("images/night_sky.png");
+	surfaceColorSkyImg = new STImage("images/sky.jpg");
     surfaceColorSkyTex = new STTexture(surfaceColorSkyImg);
     
     shaderSky = new STShaderProgram();
@@ -225,7 +219,6 @@ void Setup()
     shaderRock1->LoadVertexShader(vertexShader);
     shaderRock1->LoadFragmentShader(fragmentShader);
     
-    
     surfaceNormMoonImg = new STImage("images/rock1.jpg");
     surfaceNormMoonTex = new STTexture(surfaceNormRock1Img);
     
@@ -238,6 +231,19 @@ void Setup()
     shaderMoon = new STShaderProgram();
     shaderMoon->LoadVertexShader(vertexShader);
     shaderMoon->LoadFragmentShader(fragmentShader);
+    
+    surfaceNormIslandImg = new STImage("images/rock1.jpg");
+    surfaceNormIslandTex = new STTexture(surfaceNormRock1Img);
+    
+    surfaceDisplaceIslandImg = new STImage("images/rock1.jpg");
+    surfaceDisplaceIslandTex = new STTexture(surfaceDisplaceRock1Img);
+    
+	surfaceColorIslandImg = new STImage("images/rock1.jpg");
+    surfaceColorIslandTex = new STTexture(surfaceColorRock1Img);
+
+    shaderIsland = new STShaderProgram();
+    shaderIsland->LoadVertexShader(vertexShader);
+    shaderIsland->LoadFragmentShader(fragmentShader);
 
     resetCamera();
     
@@ -251,9 +257,10 @@ void Setup()
     rock1->CalculateTextureCoordinatesViaSphericalProxy();
     
     moon = new STTriangleMesh("meshes/sphere_fine.obj");
-    sky = new STTriangleMesh("meshes/skyplane.obj");
     CreateYourOwnMesh();
-}
+    sky = new STTriangleMesh("meshes/skyplane.obj");
+    island = new STTriangleMesh("meshes/island.obj");
+    }
 
 void CleanUp()
 {
@@ -282,7 +289,8 @@ void AdjustCameraTranslationBy(STVector3 delta)
 }
 
 void skyTransformations(){
-    glRotatef(0, 0, 0, 1);
+    glRotatef(5, 1, 0, 0);
+    //glTranslatef(0,-10, -10);
 }
 
 void rockTransformations(){
@@ -293,6 +301,17 @@ void rockTransformations(){
 
 void moonTransformations(){
     glTranslatef(0, 0, 0);
+}
+
+void islandTransformations(){
+    glLoadIdentity();
+    glScalef(0.01,0.01,0.01);
+    glRotatef(23, 1, 0, 0);
+    //glRotatef(15, 0, 1, 0);
+   //glRotatef(-50, 0, 0, 1);
+    glTranslatef(0,-1, 10);
+    glScalef(0.3,0.3,0.3);
+
 }
 //
 // Display the output image from our vertex and fragment shaders
@@ -500,6 +519,52 @@ void DisplayCallback()
     
     glActiveTexture(GL_TEXTURE2);
     surfaceColorRock1Tex->UnBind();
+
+    
+    
+    // Texture 0: surface normal map
+    glActiveTexture(GL_TEXTURE0);
+    surfaceNormIslandTex->Bind();
+    
+    // Texture 1: surface normal map
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceIslandTex->Bind();
+    
+    // Texture 2: surface color map
+    glActiveTexture(GL_TEXTURE2);
+    surfaceColorIslandTex->Bind();
+    
+    // Bind the textures we've loaded into openGl to
+    // the variable names we specify in the fragment
+    // shader.
+    shaderIsland->SetTexture("normalTex", 0);
+    shaderIsland->SetTexture("displacementTex", 1);
+    shaderIsland->SetTexture("colorTex", 2);
+    
+    // Invoke the shader.  Now OpenGL will call our
+    // shader programs on anything we draw.
+    shaderIsland->Bind();
+    
+    shaderIsland->SetUniform("displacementMapping", 1.0);
+    shaderIsland->SetUniform("normalMapping", -1.0);
+    shaderIsland->SetUniform("colorMapping", 1.0);
+    
+    glPushMatrix();
+    islandTransformations();
+    island->Draw(smooth);
+    glPopMatrix();
+    
+    shaderIsland->UnBind();
+    
+    glActiveTexture(GL_TEXTURE0);
+    surfaceNormIslandTex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceIslandTex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE2);
+    surfaceColorIslandTex->UnBind();
+    
 
     
     glutSwapBuffers();
