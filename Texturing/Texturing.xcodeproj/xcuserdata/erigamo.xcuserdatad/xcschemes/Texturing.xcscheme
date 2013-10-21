@@ -67,7 +67,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "meshes/rock2.obj"
+            argument = "meshes/skyplane.obj"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

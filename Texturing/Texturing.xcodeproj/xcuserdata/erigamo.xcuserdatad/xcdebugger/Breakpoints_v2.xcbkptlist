@@ -10,11 +10,509 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cpp"
-            timestampString = "404025724.142458"
+            timestampString = "404033229.889642"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
+            landmarkName = "Setup()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main.cpp"
+            timestampString = "404032253.071193"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
+            landmarkName = "Setup()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main.cpp"
+            timestampString = "404036176.998953"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "Setup()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.490366"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "262">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.490791"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "322">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.49114"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "489">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.491522"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "549">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.491875"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "716">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.492236"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "776">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.492573"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "833">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.492929"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "1037">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.493277"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "1097">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.493644"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "1264">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.493992"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "1324">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.494296"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "1512">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.494497"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "1572">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.49474"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "1629">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.49493"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "1854">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.495113"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "1914">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.495303"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "2102">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.495547"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "2162">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.495755"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "2350">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.495943"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "2410">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.496173"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "2467">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.496362"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "2692">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.496694"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "2752">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.496902"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "2940">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.49709"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "3000">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.497275"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "3188">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.497459"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "3248">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.497657"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "3305">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.497842"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "3466">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.498025"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "3516">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.498211"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "5263">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Setup()"
+                  moduleName = "Texturing"
+                  urlString = "file://localhost/Users/erigamo/Documents/Junior/cs148/scanline_image/Texturing/main.cpp"
+                  timestampString = "404036178.498403"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "256"
+                  endingLineNumber = "256"
+                  offsetFromSymbolStart = "5460">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main.cpp"
+            timestampString = "404036322.119725"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "326"
+            endingLineNumber = "326"
             landmarkName = "DisplayCallback()"
             landmarkType = "7">
          </BreakpointContent>
