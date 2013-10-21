@@ -47,6 +47,12 @@ static float materialMoonDiffuse[]  = { 0.8, 0.8, 0.8, 0.6 };
 static float materialMoonSpecular[] = { 0.2, 0.2, 0.2, 1.0 };
 static float shininessMoon          = 3.0;  // # between 1 and 128.
 
+// island
+static float materialIslandAmbient[]  = { 0.1, 0.1, 0.1, 0.7 };
+static float materialIslandDiffuse[]  = { 0.3, 0.3, 0.3, 0.6 };
+static float materialIslandSpecular[] = { 0.2, 0.2, 0.2, 1.0 };
+static float shiniessIsland = 2.0;
+
 //static float material2Ambient[]  = { 1., 1., 1., 1. };
 //static float material2Diffuse[]  = { 1., 1., 1., 1. };
 //static float material2Specular[] = { 1., 1., 1., 1. };
@@ -262,14 +268,14 @@ void Setup()
     shaderMoon->LoadVertexShader(vertexShader);
     shaderMoon->LoadFragmentShader(fragmentShader);
     
-    surfaceNormIslandImg = new STImage("images/rock1.jpg");
-    surfaceNormIslandTex = new STTexture(surfaceNormRock1Img);
+    surfaceNormIslandImg = new STImage("images/texture.jpg");
+    surfaceNormIslandTex = new STTexture(surfaceNormIslandImg);
     
-    surfaceDisplaceIslandImg = new STImage("images/rock1.jpg");
-    surfaceDisplaceIslandTex = new STTexture(surfaceDisplaceRock1Img);
+    surfaceDisplaceIslandImg = new STImage("images/texture.jpg");
+    surfaceDisplaceIslandTex = new STTexture(surfaceDisplaceIslandImg);
     
-	surfaceColorIslandImg = new STImage("images/rock1.jpg");
-    surfaceColorIslandTex = new STTexture(surfaceColorRock1Img);
+	surfaceColorIslandImg = new STImage("images/texture.jpg");
+    surfaceColorIslandTex = new STTexture(surfaceColorIslandImg);
 
     shaderIsland = new STShaderProgram();
     shaderIsland->LoadVertexShader(vertexShader);
@@ -292,6 +298,8 @@ void Setup()
     CreateYourOwnMesh();
     sky = new STTriangleMesh("meshes/skyplane.obj");
     island = new STTriangleMesh("meshes/island.obj");
+    island->CalculateTextureCoordinatesViaSphericalProxy();
+
     }
 
 void CleanUp()
@@ -346,7 +354,7 @@ void islandTransformations(){
     glRotatef(-90, 1, 0, 0);
     //glRotatef(20, 0, 1, 0);
     glRotatef(0, 0, 0, 1);
-    glRotatef(-10, 0, 1, 1 );s
+    glRotatef(-10, 0, 1, 1 );
     glRotatef(17, 0, 1, 0);
 
     glRotatef(5, 1,0, 0);
@@ -579,6 +587,11 @@ void DisplayCallback()
 //    surfaceColorRock1Tex->UnBind();
 
     
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   materialIslandAmbient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   materialIslandDiffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  materialIslandSpecular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, &shiniessIsland);
+
     
     // Texture 0: surface normal map
     glActiveTexture(GL_TEXTURE0);
