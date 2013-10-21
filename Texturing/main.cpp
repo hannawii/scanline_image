@@ -197,13 +197,13 @@ void Setup()
     shaderSky->LoadFragmentShader(fragmentShader);
     
     
-    surfaceNormRock1Img = new STImage("images/sky.jpg");
+    surfaceNormRock1Img = new STImage("images/rock1.jpg");
     surfaceNormRock1Tex = new STTexture(surfaceNormRock1Img);
     
-    surfaceDisplaceRock1Img = new STImage("images/sky.jpg");
+    surfaceDisplaceRock1Img = new STImage("images/rock1.jpg");
     surfaceDisplaceRock1Tex = new STTexture(surfaceDisplaceRock1Img);
     
-	surfaceColorRock1Img = new STImage("images/sky.jpg");
+	surfaceColorRock1Img = new STImage("images/rock1.jpg");
     surfaceColorRock1Tex = new STTexture(surfaceColorRock1Img);
     
     shaderRock1 = new STShaderProgram();
@@ -313,7 +313,7 @@ void DisplayCallback()
     }
     
     glTranslatef(0.f, -1.5f, 0.f);
-    //water->Draw(smooth);
+    water->Draw(smooth);
         
     shaderWater->UnBind();
         
@@ -395,7 +395,7 @@ void DisplayCallback()
     shaderRock1->Bind();
     
     shaderRock1->SetUniform("displacementMapping", -1.0);
-    shaderRock1->SetUniform("normalMapping", -1.0);
+    shaderRock1->SetUniform("normalMapping", 1.0);
     shaderRock1->SetUniform("colorMapping", 1.0);
     
     glPushMatrix();
