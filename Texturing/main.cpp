@@ -372,15 +372,12 @@ void DisplayCallback()
     // shader programs on anything we draw.
     shaderSky->Bind();
     
-    shaderSky->SetUniform("displacementMapping", -1.0);
-    shaderSky->SetUniform("normalMapping", 1.0);
+    shaderSky->SetUniform("displacementMapping", 1.0);
+    shaderSky->SetUniform("normalMapping", -1.0);
     shaderSky->SetUniform("colorMapping", 1.0);
     
-    
-    //sky->LoopSubdivide();
     glPushMatrix();
     skyTransformations();
-//    sky->LoopSubdivide();
     sky->Draw(smooth);
     glPopMatrix();
     
