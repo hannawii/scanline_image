@@ -35,8 +35,8 @@ static float diffuseLight[]  = {1.20, 1.20, 1.20, 1.0};
 float lightPosition[] = {10.0f, 15.0f, 10.0f, 1.0f};
 
 // Material color properties
-static float materialAmbient[]  = { 0.2, 0.2, 0.6, 1.0 };
-static float materialDiffuse[]  = { 0.2, 0.2, 0.6, 1.0 };
+static float materialAmbient[]  = { 0.2, 0.2, 0.2, 1.0 };
+static float materialDiffuse[]  = { 0.2, 0.2, 0.2, 1.0 };
 static float materialSpecular[] = { 0.8, 0.8, 0.8, 1.0 };
 static float shininess          = 8.0;  // # between 1 and 128.
 
@@ -45,6 +45,7 @@ static float shininess          = 8.0;  // # between 1 and 128.
 //static float material2Specular[] = { 1., 1., 1., 1. };
 //static float shininess2          = 1.;  // # between 1 and 128.
 
+//rock
 STImage   *surfaceNormRock1Img;
 STTexture *surfaceNormRock1Tex;
 
@@ -54,6 +55,7 @@ STTexture *surfaceDisplaceRock1Tex;
 STImage   *surfaceColorRock1Img;
 STTexture *surfaceColorRock1Tex;
 
+//sky
 STImage   *surfaceNormSkyImg;
 STTexture *surfaceNormSkyTex;
 
@@ -63,6 +65,7 @@ STTexture *surfaceDisplaceSkyTex;
 STImage   *surfaceColorSkyImg;
 STTexture *surfaceColorSkyTex;
 
+//water
 STImage   *surfaceNormWaterImg;
 STTexture *surfaceNormWaterTex;
 
@@ -72,6 +75,7 @@ STTexture *surfaceDisplaceWaterTex;
 STImage   *surfaceColorWaterImg;
 STTexture *surfaceColorWaterTex;
 
+//moon
 STImage   *surfaceNormMoonImg;
 STTexture *surfaceNormMoonTex;
 
@@ -194,13 +198,13 @@ void Setup()
     shaderWater->LoadFragmentShader(fragmentShader);
     
     
-    surfaceNormSkyImg = new STImage("images/water1.jpg");
+    surfaceNormSkyImg = new STImage("images/sky.jpg");
     surfaceNormSkyTex = new STTexture(surfaceNormSkyImg);
     
-    surfaceDisplaceSkyImg = new STImage("images/water1.jpg");
+    surfaceDisplaceSkyImg = new STImage("images/sky.jpg");
     surfaceDisplaceSkyTex = new STTexture(surfaceDisplaceSkyImg);
     
-	surfaceColorSkyImg = new STImage("images/deep_blue.jpg");
+	surfaceColorSkyImg = new STImage("images/night_sky.png");
     surfaceColorSkyTex = new STTexture(surfaceColorSkyImg);
     
     shaderSky = new STShaderProgram();
@@ -247,6 +251,7 @@ void Setup()
     rock1->CalculateTextureCoordinatesViaSphericalProxy();
     
     moon = new STTriangleMesh("meshes/sphere_fine.obj");
+    sky = new STTriangleMesh("meshes/skyplane.obj");
     CreateYourOwnMesh();
 }
 
@@ -276,9 +281,14 @@ void AdjustCameraTranslationBy(STVector3 delta)
     mCameraTranslation += delta;
 }
 
+void skyTransformations(){
+    glRotatef(0, 0, 0, 1);
+}
+
 void rockTransformations(){
     glTranslatef(0,-10, -40);
-    
+    glRotatef(10, 10, 19, 10);
+    glTranslatef(1,-20, -40);
 }
 
 void moonTransformations(){
@@ -357,49 +367,51 @@ void DisplayCallback()
     glActiveTexture(GL_TEXTURE2);
     surfaceColorWaterTex->UnBind();
     
+    //SKYYY
+    // Texture 0: surface normal map
+    glActiveTexture(GL_TEXTURE0);
+    surfaceNormSkyTex->Bind();
     
-//    // Texture 0: surface normal map
-//    glActiveTexture(GL_TEXTURE0);
-//    surfaceNormSkyTex->Bind();
-//    
-//    // Texture 1: surface normal map
-//    glActiveTexture(GL_TEXTURE1);
-//    surfaceDisplaceSkyTex->Bind();
-//    
-//    // Texture 2: surface color map
-//    glActiveTexture(GL_TEXTURE2);
-//    surfaceColorSkyTex->Bind();
-//    
-//    // Bind the textures we've loaded into openGl to
-//    // the variable names we specify in the fragment
-//    // shader.
-//    shaderSky->SetTexture("normalTex", 0);
-//    shaderSky->SetTexture("displacementTex", 1);
-//    shaderSky->SetTexture("colorTex", 2);
-//    
-//    // Invoke the shader.  Now OpenGL will call our
-//    // shader programs on anything we draw.
-//    shaderSky->Bind();
-//    
-//    shaderSky->SetUniform("displacementMapping", -1.0);
-//    shaderSky->SetUniform("normalMapping", -1.0);
-//    shaderSky->SetUniform("colorMapping", 1.0);
-//    
-//    
-//    //sky->LoopSubdivide();
-//    sky->Draw(smooth);
-//    
-//    
-//    shaderSky->UnBind();
-//    
-//    glActiveTexture(GL_TEXTURE0);
-//    surfaceNormSkyTex->UnBind();
-//    
-//    glActiveTexture(GL_TEXTURE1);
-//    surfaceDisplaceSkyTex->UnBind();
-//    
-//    glActiveTexture(GL_TEXTURE2);
-//    surfaceColorSkyTex->UnBind();
+    // Texture 1: surface normal map
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceSkyTex->Bind();
+    
+    // Texture 2: surface color map
+    glActiveTexture(GL_TEXTURE2);
+    surfaceColorSkyTex->Bind();
+    
+    // Bind the textures we've loaded into openGl to
+    // the variable names we specify in the fragment
+    // shader.
+    shaderSky->SetTexture("normalTex", 0);
+    shaderSky->SetTexture("displacementTex", 1);
+    shaderSky->SetTexture("colorTex", 2);
+    
+    // Invoke the shader.  Now OpenGL will call our
+    // shader programs on anything we draw.
+    shaderSky->Bind();
+    
+    shaderSky->SetUniform("displacementMapping", -1.0);
+    shaderSky->SetUniform("normalMapping", 1.0);
+    shaderSky->SetUniform("colorMapping", 1.0);
+    
+    
+    //sky->LoopSubdivide();
+    glPushMatrix();
+    skyTransformations();
+    sky->Draw(smooth);
+    glPopMatrix();
+    
+    shaderSky->UnBind();
+    
+    glActiveTexture(GL_TEXTURE0);
+    surfaceNormSkyTex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceSkyTex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE2);
+    surfaceColorSkyTex->UnBind();
     
     
     // Texture 0: surface normal map
