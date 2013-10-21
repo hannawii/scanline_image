@@ -339,18 +339,19 @@ void moonTransformations(){
     glTranslatef(1.5f, 0.2f, 0.f);
 }
 
+
 void islandTransformations(){
-    glScalef(0.08f, 0.05f, 0.05f);
+    glScalef(0.08f, 0.08f, 0.05f);
     glTranslatef(1.5f, 0.2f, 0.f);    //glRotatef(90.0f, 1, 0, 0);
     glRotatef(-90, 1, 0, 0);
     //glRotatef(20, 0, 1, 0);
     glRotatef(0, 0, 0, 1);
-    glRotatef(-10, 0, 1, 1 );
+    glRotatef(-10, 0, 1, 1 );s
     glRotatef(17, 0, 1, 0);
 
     glRotatef(5, 1,0, 0);
 
-    glTranslatef(- 30.f, -4.f, -7.f);
+    glTranslatef(- 30.f, -4.f, -4.f);
 }
 //
 // Display the output image from our vertex and fragment shaders
