@@ -40,18 +40,24 @@ static float materialDiffuse[]  = { 0.9, 0.9, 0.9, 0.4 };
 static float materialSpecular[] = { 0.8, 0.8, 0.8, 1.0 };
 static float shininess          = 8.0;  // # between 1 and 128.
 
-
 // Material color properties
-static float materialMoonAmbient[]  = { 0.1, 0.1, 0.1, 0.7 };
-static float materialMoonDiffuse[]  = { 0.8, 0.8, 0.8, 0.6 };
-static float materialMoonSpecular[] = { 0.2, 0.2, 0.2, 1.0 };
-static float shininessMoon          = 3.0;  // # between 1 and 128.
 
 // island
 static float materialIslandAmbient[]  = { 0.1, 0.1, 0.1, 0.7 };
 static float materialIslandDiffuse[]  = { 0.3, 0.3, 0.3, 0.6 };
 static float materialIslandSpecular[] = { 0.2, 0.2, 0.2, 1.0 };
 static float shiniessIsland = 2.0;
+
+static float materialMoonAmbient[]  = { 0.1, 0.1, 0.1, 1.0 };
+static float materialMoonDiffuse[]  = { 1.0, 1.0, 1.0, 0.5 };
+static float materialMoonSpecular[] = { 0.1, 0.1, 0.1, 1.0 };
+static float shininessMoon          = 3.0;  // # between 1 and 128.
+
+// Material color properties
+static float materialSkyAmbient[]  = { 0.5, 0.5, 0.5, 1.0 };
+static float materialSkyDiffuse[]  = { 0.5, 0.5, 0.5, 1.0 };
+static float materialSkySpecular[] = { 0.1, 0.1, 0.1, 1.0 };
+static float shininessSky          = 1.0;
 
 //static float material2Ambient[]  = { 1., 1., 1., 1. };
 //static float material2Diffuse[]  = { 1., 1., 1., 1. };
@@ -140,7 +146,7 @@ int TesselationDepth = 100;
 
 void resetCamera()
 {
-    mCameraTranslation = STVector3(0.f, 0.f, 15.f);
+    mCameraTranslation = STVector3(0.f, 0.f, 16.5f);
     mCameraAzimuth = 0.f;
     mCameraElevation = 65.0f;
 }
@@ -174,28 +180,8 @@ void CreateYourOwnMesh()
         }
     }
     water->Build();
-    
 
-//    sky = new STTriangleMesh();
-//    
-//    float bottomY = 0.f;
-//    float topY = 5.5f;
-//    float Z = -2.0f;
-//
-//    
-//    sky->AddVertex(leftX, topY, Z);
-//    sky->AddVertex(leftX, bottomY, Z);
-//    sky->AddVertex((leftX + rightX) / 2, topY, Z);
-//    sky->AddVertex((leftX + rightX) / 2, bottomY, Z);
-//    sky->AddVertex(rightX, topY, Z);
-//    sky->AddVertex(rightX, bottomY, Z);
-//    
-//    sky->AddFace(0, 1, 2);
-//    sky->AddFace(2, 1, 3);
-//    sky->AddFace(2, 4, 3);
-//    sky->AddFace(3, 4, 5);
-//
-//    sky->Build();
+    sky = water;
     
 }
 //
@@ -227,13 +213,13 @@ void Setup()
     shaderWater->LoadFragmentShader(fragmentShader);
     
     
-    surfaceNormSkyImg = new STImage("images/sky.jpg");
+    surfaceNormSkyImg = new STImage("images/night_sky.jpg");
     surfaceNormSkyTex = new STTexture(surfaceNormSkyImg);
     
-    surfaceDisplaceSkyImg = new STImage("images/sky.jpg");
+    surfaceDisplaceSkyImg = new STImage("images/night_sky.jpg");
     surfaceDisplaceSkyTex = new STTexture(surfaceDisplaceSkyImg);
     
-	surfaceColorSkyImg = new STImage("images/sky.jpg");
+    surfaceColorSkyImg = new STImage("images/night_sky.jpg");
     surfaceColorSkyTex = new STTexture(surfaceColorSkyImg);
     
     shaderSky = new STShaderProgram();
@@ -296,10 +282,8 @@ void Setup()
     
     moon->CalculateTextureCoordinatesViaSphericalProxy();
     CreateYourOwnMesh();
-    sky = new STTriangleMesh("meshes/skyplane.obj");
     island = new STTriangleMesh("meshes/island.obj");
     island->CalculateTextureCoordinatesViaSphericalProxy();
-
     }
 
 void CleanUp()
@@ -329,10 +313,13 @@ void AdjustCameraTranslationBy(STVector3 delta)
 }
 
 void skyTransformations(){
-    glScalef(60.f, 50.f, 10.f);
-    glTranslatef(0.f, -0.01f, -.7f);
-    glRotatef(-66.5, 1, 0, 0);
-    //glTranslatef(0.f, 0.3f, 0.f);
+//    glScalef(60.f, 60.f, 60.f);
+//    glTranslatef(0.f, -0.01f, -.7f);
+//    glRotatef(-66.5, 1, 0, 0);
+    
+    glRotatef(65, 1, 0, 0);
+    //glScalef(0.1f, 0.f, 0.f);
+    glTranslatef(0.f, -4.f, -4.f);
 }
 
 void rockTransformations(){
@@ -342,9 +329,10 @@ void rockTransformations(){
 }
 
 void moonTransformations(){
-    glRotatef(90, 0, 1, 0);
-    glScalef(4.0f, 4.0f, 4.0f);
-    glTranslatef(1.5f, 0.2f, 0.f);
+    glRotatef(60, 0, 1, 0);
+    glRotatef(-10, 1, 0, 0);
+    glScalef(3.2f, 3.2f, 3.2f);
+    glTranslatef(2.2f, .5f, 0.f);
 }
 
 
@@ -380,6 +368,11 @@ void DisplayCallback()
 
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     
+    
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   materialSkyAmbient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   materialSkyDiffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  materialSkySpecular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, &shininessSky);
     
     //SKYYY
     // Texture 0: surface normal map
@@ -419,6 +412,7 @@ void DisplayCallback()
     //sky->LoopSubdivide();
     glPushMatrix();
     skyTransformations();
+//    sky->LoopSubdivide();
     sky->Draw(smooth);
     glPopMatrix();
     
@@ -432,7 +426,6 @@ void DisplayCallback()
     
     glActiveTexture(GL_TEXTURE2);
     surfaceColorSkyTex->UnBind();
-    
     
 
     // Texture 0: surface normal map
@@ -475,7 +468,7 @@ void DisplayCallback()
         shaderWater->SetUniform("TesselationDepth", TesselationDepth);
     }
     
-    glTranslatef(0.f, -1.5f, 0.f);
+    glTranslatef(0.f, -1.7f, 0.f);
     water->Draw(smooth);
         
     shaderWater->UnBind();
@@ -488,7 +481,7 @@ void DisplayCallback()
         
     glActiveTexture(GL_TEXTURE2);
     surfaceColorWaterTex->UnBind();
-    
+
     
     
     glMaterialfv(GL_FRONT, GL_AMBIENT,   materialMoonAmbient);
@@ -760,7 +753,7 @@ int main(int argc, char** argv)
     glutInit(&argc, argv);
     glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowPosition(20, 20);
-    glutInitWindowSize(640, 480);
+    glutInitWindowSize(675, 480);
     glutCreateWindow("CS148 Texturing");
     
     //
