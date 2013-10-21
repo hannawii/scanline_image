@@ -142,6 +142,7 @@ STTriangleMesh* rock1 = 0;
 STTriangleMesh* moon = 0;
 STTriangleMesh* island = 0;
 STTriangleMesh* huts = 0;
+STTriangleMesh* boat = 0;
 
 int TesselationDepth = 100;
 
@@ -287,6 +288,7 @@ void Setup()
     island->CalculateTextureCoordinatesViaSphericalProxy();
     //island->CalculateTextureCoordinatesViaCylindricalProxy(-40, 20, 2, 0, 1);
     huts = new STTriangleMesh("meshes/huts2.obj");
+    //boat = new STTriangleMesh("meshes/deadtree.obj");
     }
 
 void CleanUp()
@@ -344,6 +346,12 @@ void hutTransformations(){
     //glRotatef(10, 10, 19, 10);
 }
 
+
+void boatTransformations(){
+    glTranslatef(0,0,0);
+    glScalef(0.001f, 0.001f, 0.001f);
+
+}
 void islandTransformations(){
     glScalef(0.08f, 0.08f, 0.05f);
     glTranslatef(1.5f, 0.2f, 0.f);    //glRotatef(90.0f, 1, 0, 0);
@@ -631,6 +639,11 @@ void DisplayCallback()
     glPushMatrix();
     hutTransformations();
     huts->Draw(smooth);
+    glPopMatrix();
+    
+    glPushMatrix();
+    boatTransformations();
+    //boat->Draw(smooth);
     glPopMatrix();
     
     glutSwapBuffers();
