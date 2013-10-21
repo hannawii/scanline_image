@@ -32,7 +32,7 @@ static float specularLight[] = {1.5, 1.5, 1.5, 1.0};
 static float ambientLight[]  = {0.90, 0.90, 0.90, 1.0};
 static float diffuseLight[]  = {1.20, 1.20, 1.20, 1.0};
 
-float lightPosition[] = {10.0f, 15.0f, 10.0f, 1.0f};
+float lightPosition[] = {10.0f, 15.0f, -5.0f, 1.0f};
 
 // Material color properties
 static float materialAmbient[]  = { 0.3, 0.3, 0.3, 1.0 };
@@ -44,8 +44,8 @@ static float shininess          = 8.0;  // # between 1 and 128.
 
 // island
 static float materialIslandAmbient[]  = { 0.1, 0.1, 0.1, 0.7 };
-static float materialIslandDiffuse[]  = { 0.3, 0.3, 0.3, 0.6 };
-static float materialIslandSpecular[] = { 0.2, 0.2, 0.2, 1.0 };
+static float materialIslandDiffuse[]  = { 0.15, 0.1, 0.1, 0.6 };
+static float materialIslandSpecular[] = { 0.15, 0.1, 0.2, 1.0 };
 static float shiniessIsland = 2.0;
 
 static float materialMoonAmbient[]  = { 0.1, 0.1, 0.1, 1.0 };
@@ -254,13 +254,13 @@ void Setup()
     shaderMoon->LoadVertexShader(vertexShader);
     shaderMoon->LoadFragmentShader(fragmentShader);
     
-    surfaceNormIslandImg = new STImage("images/texture.jpg");
+    surfaceNormIslandImg = new STImage("images/texture3.jpg");
     surfaceNormIslandTex = new STTexture(surfaceNormIslandImg);
     
-    surfaceDisplaceIslandImg = new STImage("images/texture.jpg");
+    surfaceDisplaceIslandImg = new STImage("images/texture3.jpg");
     surfaceDisplaceIslandTex = new STTexture(surfaceDisplaceIslandImg);
     
-	surfaceColorIslandImg = new STImage("images/texture.jpg");
+	surfaceColorIslandImg = new STImage("images/texture3.jpg");
     surfaceColorIslandTex = new STTexture(surfaceColorIslandImg);
 
     shaderIsland = new STShaderProgram();
