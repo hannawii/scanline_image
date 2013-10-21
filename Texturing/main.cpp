@@ -114,6 +114,16 @@ STTexture *surfaceColorIslandTex;
 STImage   *surfaceDisplaceIslandImg;
 STTexture *surfaceDisplaceIslandTex;
 
+//huts
+STImage   *surfaceNormHutsImg;
+STTexture *surfaceNormHutsTex;
+
+STImage *surfaceColorHutsImg;
+STTexture *surfaceColorHutsTex;
+
+STImage   *surfaceDisplaceHutsImg;
+STTexture *surfaceDisplaceHutsTex;
+
 
 //shaders
 STShaderProgram *shaderWater;
@@ -121,6 +131,7 @@ STShaderProgram *shaderSky;
 STShaderProgram *shaderRock1;
 STShaderProgram *shaderMoon;
 STShaderProgram *shaderIsland;
+STShaderProgram *shaderHuts;
 
 
 // Stored mouse position for camera rotation, panning, and zoom.
@@ -263,10 +274,20 @@ void Setup()
     
 	surfaceColorIslandImg = new STImage("images/texture3.jpg");
     surfaceColorIslandTex = new STTexture(surfaceColorIslandImg);
+    
+    
+    surfaceNormHutsImg = new STImage("images/huts.jpg");
+    surfaceNormHutsTex = new STTexture(surfaceNormHutsImg);
+    
+    surfaceDisplaceHutsImg = new STImage("images/huts.jpg");
+    surfaceDisplaceHutsTex = new STTexture(surfaceDisplaceHutsImg);
+    
+	surfaceColorHutsImg = new STImage("images/huts.jpg");
+    surfaceColorHutsTex = new STTexture(surfaceColorHutsImg);
 
-    shaderIsland = new STShaderProgram();
-    shaderIsland->LoadVertexShader(vertexShader);
-    shaderIsland->LoadFragmentShader(fragmentShader);
+    shaderHuts = new STShaderProgram();
+    shaderHuts->LoadVertexShader(vertexShader);
+    shaderHuts->LoadFragmentShader(fragmentShader);
 
     resetCamera();
     
@@ -286,6 +307,8 @@ void Setup()
     island = new STTriangleMesh("meshes/island.obj");
     island->CalculateTextureCoordinatesViaSphericalProxy();
     //island->CalculateTextureCoordinatesViaCylindricalProxy(-40, 20, 2, 0, 1);
+    
+    huts->CalculateTextureCoordinatesViaSphericalProxy();
     huts = new STTriangleMesh("meshes/huts2.obj");
     }
 
@@ -339,9 +362,10 @@ void moonTransformations(){
 }
 
 void hutTransformations(){
-    glTranslatef(0,0, 0);
     glScalef(0.001f, 0.001f, 0.001f);
-    //glRotatef(10, 10, 19, 10);
+    glRotatef(-90, 0, 1, 0);
+    glTranslatef(-1500.f, 600.f, 3000.f);
+    glRotatef(20, 0, 0, 1);
 }
 
 void islandTransformations(){
@@ -628,10 +652,49 @@ void DisplayCallback()
     glActiveTexture(GL_TEXTURE2);
     surfaceColorIslandTex->UnBind();
     
+    
+    // Texture 0: surface normal map
+    glActiveTexture(GL_TEXTURE0);
+    surfaceNormHutsTex->Bind();
+    
+    // Texture 1: surface normal map
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceHutsTex->Bind();
+    
+    // Texture 2: surface color map
+    glActiveTexture(GL_TEXTURE2);
+    surfaceColorHutsTex->Bind();
+    
+    // Bind the textures we've loaded into openGl to
+    // the variable names we specify in the fragment
+    // shader.
+    shaderHuts->SetTexture("normalTex", 0);
+    shaderHuts->SetTexture("displacementTex", 1);
+    shaderHuts->SetTexture("colorTex", 2);
+    
+    // Invoke the shader.  Now OpenGL will call our
+    // shader programs on anything we draw.
+    shaderHuts->Bind();
+    
+    shaderHuts->SetUniform("displacementMapping", -1.0);
+    shaderHuts->SetUniform("normalMapping", -1.0);
+    shaderHuts->SetUniform("colorMapping", 1.0);
+    
     glPushMatrix();
     hutTransformations();
     huts->Draw(smooth);
     glPopMatrix();
+    
+    shaderHuts->UnBind();
+    
+    glActiveTexture(GL_TEXTURE0);
+    surfaceNormHutsTex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE1);
+    surfaceDisplaceHutsTex->UnBind();
+    
+    glActiveTexture(GL_TEXTURE2);
+    surfaceColorHutsTex->UnBind();
     
     glutSwapBuffers();
 }
