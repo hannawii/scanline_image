@@ -293,10 +293,10 @@ void AdjustCameraTranslationBy(STVector3 delta)
 }
 
 void skyTransformations(){
-    glScalef(50.f, 15.f, 10.f);
-    glTranslatef(0.f, 0.1f, -1.f);
-    glRotatef(-50, 1, 0, 0);
-    //glTranslatef(0.f, -0.1f, 0.f);
+    glScalef(60.f, 50.f, 10.f);
+    glTranslatef(0.f, -0.01f, -.7f);
+    glRotatef(-66.5, 1, 0, 0);
+    //glTranslatef(0.f, 0.3f, 0.f);
 }
 
 void rockTransformations(){
@@ -308,7 +308,7 @@ void rockTransformations(){
 void moonTransformations(){
     glRotatef(90, 0, 1, 0);
     glScalef(4.0f, 4.0f, 4.0f);
-    glTranslatef(2.0f, 0.f, 0.f);
+    glTranslatef(1.5f, 0.2f, 0.f);
 }
 //
 // Display the output image from our vertex and fragment shaders
