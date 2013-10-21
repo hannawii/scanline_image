@@ -285,8 +285,8 @@ void Setup()
     CreateYourOwnMesh();
     island = new STTriangleMesh("meshes/island.obj");
     island->CalculateTextureCoordinatesViaSphericalProxy();
-    
-    huts = new STTriangleMesh("meshes/huts.obj");
+    //island->CalculateTextureCoordinatesViaCylindricalProxy(-40, 20, 2, 0, 1);
+    huts = new STTriangleMesh("meshes/huts2.obj");
     }
 
 void CleanUp()
@@ -338,6 +338,11 @@ void moonTransformations(){
     glTranslatef(2.2f, .5f, 0.f);
 }
 
+void hutTransformations(){
+    glTranslatef(0,0, 0);
+    glScalef(0.001f, 0.001f, 0.001f);
+    //glRotatef(10, 10, 19, 10);
+}
 
 void islandTransformations(){
     glScalef(0.08f, 0.08f, 0.05f);
@@ -623,8 +628,10 @@ void DisplayCallback()
     glActiveTexture(GL_TEXTURE2);
     surfaceColorIslandTex->UnBind();
     
-
+    glPushMatrix();
+    hutTransformations();
     huts->Draw(smooth);
+    glPopMatrix();
     
     glutSwapBuffers();
 }
