@@ -141,6 +141,7 @@ STTriangleMesh* sky = 0;
 STTriangleMesh* rock1 = 0;
 STTriangleMesh* moon = 0;
 STTriangleMesh* island = 0;
+STTriangleMesh* huts = 0;
 
 int TesselationDepth = 100;
 
@@ -284,6 +285,8 @@ void Setup()
     CreateYourOwnMesh();
     island = new STTriangleMesh("meshes/island.obj");
     island->CalculateTextureCoordinatesViaSphericalProxy();
+    
+    huts = new STTriangleMesh("meshes/huts.obj");
     }
 
 void CleanUp()
@@ -621,6 +624,7 @@ void DisplayCallback()
     surfaceColorIslandTex->UnBind();
     
 
+    huts->Draw(smooth);
     
     glutSwapBuffers();
 }

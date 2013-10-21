@@ -94,6 +94,7 @@ bool STTriangleMesh::Read(const std::string& filename)
         char token[128];
         float x,y,z;
         int p1,p2,p3;
+        float m,n,t;
         while(in>>token){
             if(strcmp(token,"#")==0){
                 in.getline(comments,256);
@@ -105,6 +106,13 @@ bool STTriangleMesh::Read(const std::string& filename)
             else if(strcmp(token,"f")==0){
                 in>>p1>>p2>>p3;
                 mFaces.push_back(new STFace(mVertices[p1-1],mVertices[p2-1],mVertices[p3-1]));
+            }
+            else if (strcmp(token, "vt") == 0) {
+                in>>m>>n>>t;
+                //mFaces.push_back(new STFace(mVertices[]));
+            }
+            else if (strcmp(token, "vn") == 0) {
+                
             }
         }
 
