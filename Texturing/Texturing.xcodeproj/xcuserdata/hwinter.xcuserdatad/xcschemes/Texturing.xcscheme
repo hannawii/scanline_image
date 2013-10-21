@@ -76,6 +76,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "meshes/clouds.obj"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "meshes/sky.obj"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
