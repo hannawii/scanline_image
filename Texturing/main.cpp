@@ -70,6 +70,7 @@ bool proxyType=false; // false: use cylinder; true: use sphere
 
 STTriangleMesh* gTriangleMesh = 0;
 STTriangleMesh* water = 0;
+STTriangleMesh* rock1 = 0;
 
 int TesselationDepth = 100;
 
@@ -146,7 +147,8 @@ void Setup()
     gTriangleMesh=new STTriangleMesh(meshOBJ);
     if(proxyType) gTriangleMesh->CalculateTextureCoordinatesViaSphericalProxy();
 	else gTriangleMesh->CalculateTextureCoordinatesViaCylindricalProxy(-1,1,0,0,1);
-
+    rock1=new STTriangleMesh("meshes/rock1.obj");
+    rock1->CalculateTextureCoordinatesViaSphericalProxy();
     CreateYourOwnMesh();
 }
 
@@ -176,6 +178,10 @@ void AdjustCameraTranslationBy(STVector3 delta)
     mCameraTranslation += delta;
 }
 
+void rockTransformations(){
+    glTranslatef(0,-10, -40);
+    
+}
 //
 // Display the output image from our vertex and fragment shaders
 //
@@ -218,8 +224,32 @@ void DisplayCallback()
     // shader programs on anything we draw.
     shader->Bind();
     
-    if(mesh)
-    {
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   materialAmbient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   materialDiffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  materialSpecular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
+    
+    if(normalMapping){
+        shader->SetUniform("displacementMapping", -1.0);
+        shader->SetUniform("normalMapping", 1.0);
+        shader->SetUniform("colorMapping", 1.0);
+    }
+    else{
+        shader->SetUniform("displacementMapping", 1.0);
+        shader->SetUniform("normalMapping", -1.0);
+        shader->SetUniform("colorMapping", 1.0);
+        shader->SetUniform("TesselationDepth", TesselationDepth);
+    }
+    
+    glTranslatef(0.f, -1.5f, 0.f);
+    //water->Draw(smooth);
+
+    glPushMatrix();
+    rockTransformations();
+    rock1->Draw(smooth);
+    glPopMatrix();
+    
+
 		//change the material to be white color for texturing the world map on the sphere
 		//if you do not want to change the material color, you do not need to put glMaterialfv functions here.
 		glMaterialfv(GL_FRONT, GL_AMBIENT,   material2Ambient);
@@ -230,32 +260,7 @@ void DisplayCallback()
         shader->SetUniform("normalMapping", -1.0);
         shader->SetUniform("displacementMapping", -1.0);
 		shader->SetUniform("colorMapping", 1.0);
-        gTriangleMesh->Draw(smooth);
-    }
-    else
-    {
-        // Ditto with accessing material properties in the fragment
-        // and vertex shaders.
-        glMaterialfv(GL_FRONT, GL_AMBIENT,   materialAmbient);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE,   materialDiffuse);
-        glMaterialfv(GL_FRONT, GL_SPECULAR,  materialSpecular);
-        glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
-        
-        if(normalMapping){
-            shader->SetUniform("displacementMapping", -1.0);
-            shader->SetUniform("normalMapping", 1.0);
-			shader->SetUniform("colorMapping", 1.0);
-        }
-        else{
-            shader->SetUniform("displacementMapping", 1.0);
-            shader->SetUniform("normalMapping", -1.0);
-			shader->SetUniform("colorMapping", 1.0);
-            shader->SetUniform("TesselationDepth", TesselationDepth);
-        }
-        
-        glTranslatef(0.f, -1.5f, 0.f);
-        water->Draw(smooth);
-    }
+        //gTriangleMesh->Draw(smooth);
 
     shader->UnBind();
     
@@ -361,61 +366,6 @@ void KeyCallback(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-/**
- * Mouse event handler
- */
-void MouseCallback(int button, int state, int x, int y)
-{
-    if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON)
-    {
-        gMouseButton = button;
-    } else
-    {
-        gMouseButton = -1;
-    }
-    
-    if (state == GLUT_UP)
-    {
-        gPreviousMouseX = -1;
-        gPreviousMouseY = -1;
-    }
-}
-
-/**
- * Mouse active motion callback (when button is pressed)
- */
-void MouseMotionCallback(int x, int y)
-{
-    if (gPreviousMouseX >= 0 && gPreviousMouseY >= 0)
-    {
-        //compute delta
-        float deltaX = x-gPreviousMouseX;
-        float deltaY = y-gPreviousMouseY;
-        gPreviousMouseX = x;
-        gPreviousMouseY = y;
-        
-        float zoomSensitivity = 0.2f;
-        float rotateSensitivity = 0.5f;
-        
-        //orbit or zoom
-        if (gMouseButton == GLUT_LEFT_BUTTON)
-        {
-            AdjustCameraAzimuthBy(-deltaX*rotateSensitivity);
-            AdjustCameraElevationBy(-deltaY*rotateSensitivity);
-            
-        } else if (gMouseButton == GLUT_RIGHT_BUTTON)
-        {
-            STVector3 zoom(0,0,deltaX);
-            AdjustCameraTranslationBy(zoom * zoomSensitivity);
-        }
-        
-    } else
-    {
-        gPreviousMouseX = x;
-        gPreviousMouseY = y;
-    }
-    
-}
 
 void usage()
 {
@@ -477,8 +427,6 @@ int main(int argc, char** argv)
     glutReshapeFunc(ReshapeCallback);
     glutSpecialFunc(SpecialKeyCallback);
     glutKeyboardFunc(KeyCallback);
-    glutMouseFunc(MouseCallback);
-    glutMotionFunc(MouseMotionCallback);
     glutIdleFunc(DisplayCallback);
 
     glutMainLoop();
@@ -488,3 +436,60 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+
+/**
+ * Mouse event handler
+ */
+//void MouseCallback(int button, int state, int x, int y)
+//{
+//    if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON)
+//    {
+//        gMouseButton = button;
+//    } else
+//    {
+//        gMouseButton = -1;
+//    }
+//
+//    if (state == GLUT_UP)
+//    {
+//        gPreviousMouseX = -1;
+//        gPreviousMouseY = -1;
+//    }
+//}
+//
+///**
+// * Mouse active motion callback (when button is pressed)
+// */
+//void MouseMotionCallback(int x, int y)
+//{
+//    if (gPreviousMouseX >= 0 && gPreviousMouseY >= 0)
+//    {
+//        //compute delta
+//        float deltaX = x-gPreviousMouseX;
+//        float deltaY = y-gPreviousMouseY;
+//        gPreviousMouseX = x;
+//        gPreviousMouseY = y;
+//
+//        float zoomSensitivity = 0.2f;
+//        float rotateSensitivity = 0.5f;
+//
+//        //orbit or zoom
+//        if (gMouseButton == GLUT_LEFT_BUTTON)
+//        {
+//            AdjustCameraAzimuthBy(-deltaX*rotateSensitivity);
+//            AdjustCameraElevationBy(-deltaY*rotateSensitivity);
+//
+//        } else if (gMouseButton == GLUT_RIGHT_BUTTON)
+//        {
+//            STVector3 zoom(0,0,deltaX);
+//            AdjustCameraTranslationBy(zoom * zoomSensitivity);
+//        }
+//
+//    } else
+//    {
+//        gPreviousMouseX = x;
+//        gPreviousMouseY = y;
+//    }
+//
+//}
