@@ -115,8 +115,8 @@ STImage   *surfaceDisplaceIslandImg;
 STTexture *surfaceDisplaceIslandTex;
 
 
-STImage *surfaceColorHutsImg;
-STTexture *surfaceColorHutsTex;
+//STImage *surfaceColorHutsImg;
+//STTexture *surfaceColorHutsTex;
 
 
 
@@ -269,7 +269,7 @@ void Setup()
     
 	surfaceColorIslandImg = new STImage("images/texture3.jpg");
     surfaceColorIslandTex = new STTexture(surfaceColorIslandImg);
-
+    
     shaderIsland = new STShaderProgram();
     shaderIsland->LoadVertexShader(vertexShader);
     shaderIsland->LoadFragmentShader(fragmentShader);
@@ -281,7 +281,6 @@ void Setup()
 //    shaderHuts->LoadVertexShader(vertexShader);
 //    shaderHuts->LoadFragmentShader(fragmentShader);
     
-
     resetCamera();
     
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -300,7 +299,9 @@ void Setup()
     island = new STTriangleMesh("meshes/island.obj");
     island->CalculateTextureCoordinatesViaSphericalProxy();
     //island->CalculateTextureCoordinatesViaCylindricalProxy(-40, 20, 2, 0, 1);
+
     huts = new STTriangleMesh("meshes/huts.obj");
+
     }
 
 void CleanUp()
@@ -644,6 +645,7 @@ void DisplayCallback()
     surfaceColorIslandTex->UnBind();
     
     
+
     
 //    // Texture 2: surface color map
 //    glActiveTexture(GL_TEXTURE2);
@@ -665,10 +667,12 @@ void DisplayCallback()
     huts->Draw(smooth);
     glPopMatrix();
     
+
     
 //    shaderHuts->UnBind();
 //    
 //    surfaceColorHutsTex->UnBind();
+
     
     glutSwapBuffers();
 }

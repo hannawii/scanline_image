@@ -74,6 +74,7 @@ bool STTriangleMesh::Read(const std::string& filename)
     // Determine the right routine based on the file's extension.
     // The format-specific subroutines are each implemented in
     // a different file.
+    
     std::string ext = STGetExtension( filename );
     if (ext.compare("OBJ") == 0){
         std::ifstream in( filename.c_str(), std::ios::in );
@@ -130,6 +131,7 @@ bool STTriangleMesh::Read(const std::string& filename)
                 in>>u>>v>>w;
                 mTextures.push_back(new STPoint2(u, v));
             }
+
         }
 
         return true;
