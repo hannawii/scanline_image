@@ -35,10 +35,17 @@ static float diffuseLight[]  = {1.20, 1.20, 1.20, 1.0};
 float lightPosition[] = {10.0f, 15.0f, 10.0f, 1.0f};
 
 // Material color properties
-static float materialAmbient[]  = { 0.2, 0.2, 0.6, 1.0 };
-static float materialDiffuse[]  = { 0.2, 0.2, 0.6, 1.0 };
-static float materialSpecular[] = { 0.8, 0.8, 0.8, 1.0 };
+static float materialAmbient[]  = { 0.7, 0.7, 0.7, 1.0 };
+static float materialDiffuse[]  = { 0.7, 0.7, 0.7, 1.0 };
+static float materialSpecular[] = { 0.7, 0.7, 0.7, 1.0 };
 static float shininess          = 8.0;  // # between 1 and 128.
+
+
+// Material color properties
+static float materialMoonAmbient[]  = { 0.1, 0.1, 0.1, 1.0 };
+static float materialMoonDiffuse[]  = { 0.9, 0.9, 0.9, 0.5 };
+static float materialMoonSpecular[] = { 0.1, 0.1, 0.1, 1.0 };
+static float shininessMoon          = 3.0;  // # between 1 and 128.
 
 //static float material2Ambient[]  = { 1., 1., 1., 1. };
 //static float material2Diffuse[]  = { 1., 1., 1., 1. };
@@ -222,14 +229,14 @@ void Setup()
     shaderRock1->LoadFragmentShader(fragmentShader);
     
     
-    surfaceNormMoonImg = new STImage("images/rock1.jpg");
-    surfaceNormMoonTex = new STTexture(surfaceNormRock1Img);
+    surfaceNormMoonImg = new STImage("images/moon.jpg");
+    surfaceNormMoonTex = new STTexture(surfaceNormMoonImg);
     
-    surfaceDisplaceMoonImg = new STImage("images/rock1.jpg");
-    surfaceDisplaceMoonTex = new STTexture(surfaceDisplaceRock1Img);
+    surfaceDisplaceMoonImg = new STImage("images/moon.jpg");
+    surfaceDisplaceMoonTex = new STTexture(surfaceDisplaceMoonImg);
     
-	surfaceColorMoonImg = new STImage("images/rock1.jpg");
-    surfaceColorMoonTex = new STTexture(surfaceColorRock1Img);
+	surfaceColorMoonImg = new STImage("images/moon.jpg");
+    surfaceColorMoonTex = new STTexture(surfaceColorMoonImg);
     
     shaderMoon = new STShaderProgram();
     shaderMoon->LoadVertexShader(vertexShader);
@@ -247,6 +254,7 @@ void Setup()
     rock1->CalculateTextureCoordinatesViaSphericalProxy();
     
     moon = new STTriangleMesh("meshes/sphere_fine.obj");
+    moon->CalculateTextureCoordinatesViaSphericalProxy();
     CreateYourOwnMesh();
 }
 
@@ -282,7 +290,9 @@ void rockTransformations(){
 }
 
 void moonTransformations(){
-    glTranslatef(0, 0, 0);
+    glRotatef(90, 0, 1, 0);
+    glScalef(4.0f, 4.0f, 4.0f);
+    glTranslatef(2.0f, 0.f, 0.f);
 }
 //
 // Display the output image from our vertex and fragment shaders
@@ -402,6 +412,14 @@ void DisplayCallback()
 //    surfaceColorSkyTex->UnBind();
     
     
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   materialMoonAmbient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   materialMoonDiffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  materialMoonSpecular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, &shininessMoon);
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     // Texture 0: surface normal map
     glActiveTexture(GL_TEXTURE0);
     surfaceNormMoonTex->Bind();
@@ -425,8 +443,8 @@ void DisplayCallback()
     // shader programs on anything we draw.
     shaderMoon->Bind();
     
-    shaderMoon->SetUniform("displacementMapping", 1.0);
-    shaderMoon->SetUniform("normalMapping", -1.0);
+    shaderMoon->SetUniform("displacementMapping", -1.0);
+    shaderMoon->SetUniform("normalMapping", 1.0);
     shaderMoon->SetUniform("colorMapping", 1.0);
     
     glPushMatrix();
