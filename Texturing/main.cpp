@@ -35,16 +35,16 @@ static float diffuseLight[]  = {1.20, 1.20, 1.20, 1.0};
 float lightPosition[] = {10.0f, 15.0f, 10.0f, 1.0f};
 
 // Material color properties
-static float materialAmbient[]  = { 0.2, 0.2, 0.2, 1.0 };
-static float materialDiffuse[]  = { 0.7, 0.7, 0.7, 0.4 };
+static float materialAmbient[]  = { 0.3, 0.3, 0.3, 1.0 };
+static float materialDiffuse[]  = { 0.9, 0.9, 0.9, 0.4 };
 static float materialSpecular[] = { 0.8, 0.8, 0.8, 1.0 };
 static float shininess          = 8.0;  // # between 1 and 128.
 
 
 // Material color properties
-static float materialMoonAmbient[]  = { 0.1, 0.1, 0.1, 1.0 };
-static float materialMoonDiffuse[]  = { 0.9, 0.9, 0.9, 0.5 };
-static float materialMoonSpecular[] = { 0.1, 0.1, 0.1, 1.0 };
+static float materialMoonAmbient[]  = { 0.1, 0.1, 0.1, 0.7 };
+static float materialMoonDiffuse[]  = { 0.8, 0.8, 0.8, 0.6 };
+static float materialMoonSpecular[] = { 0.2, 0.2, 0.2, 1.0 };
 static float shininessMoon          = 3.0;  // # between 1 and 128.
 
 //static float material2Ambient[]  = { 1., 1., 1., 1. };
@@ -321,8 +321,10 @@ void AdjustCameraTranslationBy(STVector3 delta)
 }
 
 void skyTransformations(){
-    glRotatef(5, 1, 0, 0);
-    //glTranslatef(0,-10, -10);
+    glScalef(60.f, 50.f, 10.f);
+    glTranslatef(0.f, -0.01f, -.7f);
+    glRotatef(-66.5, 1, 0, 0);
+    //glTranslatef(0.f, 0.3f, 0.f);
 }
 
 void rockTransformations(){
@@ -334,18 +336,21 @@ void rockTransformations(){
 void moonTransformations(){
     glRotatef(90, 0, 1, 0);
     glScalef(4.0f, 4.0f, 4.0f);
-    glTranslatef(2.0f, 0.f, 0.f);
+    glTranslatef(1.5f, 0.2f, 0.f);
 }
 
 void islandTransformations(){
-    glLoadIdentity();
-    glScalef(0.01,0.01,0.01);
-    //glRotatef(23, 1, 0, 0);
-    //glRotatef(15, 0, 1, 0);
-    //glRotatef(-50, 0, 0, 1);
-    //glTranslatef(0,-1, 10);
-    glScalef(0.3,0.3,0.3);
+    glScalef(0.08f, 0.05f, 0.05f);
+    glTranslatef(1.5f, 0.2f, 0.f);    //glRotatef(90.0f, 1, 0, 0);
+    glRotatef(-90, 1, 0, 0);
+    //glRotatef(20, 0, 1, 0);
+    glRotatef(0, 0, 0, 1);
+    glRotatef(-10, 0, 1, 1 );
+    glRotatef(17, 0, 1, 0);
 
+    glRotatef(5, 1,0, 0);
+
+    glTranslatef(- 30.f, -4.f, -7.f);
 }
 //
 // Display the output image from our vertex and fragment shaders
@@ -357,7 +362,7 @@ void DisplayCallback()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    glTranslatef(-mCameraTranslation.x, -mCameraTranslation.y, -mCameraTranslation.z);
+    glTranslatef(-mCameraTranslation.x * 0, -mCameraTranslation.y * 0, -mCameraTranslation.z);
     
     glRotatef(-mCameraElevation, 1, 0, 0);
     glRotatef(-mCameraAzimuth, 0, 1, 0);
@@ -396,6 +401,12 @@ void DisplayCallback()
     shaderSky->SetUniform("colorMapping", 1.0);
     
     
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   materialMoonAmbient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   materialMoonDiffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  materialMoonSpecular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, &shininessMoon);
+    
+
     //sky->LoopSubdivide();
     glPushMatrix();
     skyTransformations();
@@ -631,8 +642,7 @@ void ReshapeCallback(int w, int h)
     glLoadIdentity();
 	// Set up a perspective projection
     float aspectRatio = (float) gWindowSizeX / (float) gWindowSizeY;
-	gluPerspective(30.0f, aspectRatio, .1f, 10000.0f);
-
+	gluPerspective(30.0f, aspectRatio, 0.1f, 10000.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
