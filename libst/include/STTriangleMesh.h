@@ -96,6 +96,7 @@ public:
     //
     std::vector<STVertex*> mVertices;
     std::vector<STFace*> mFaces;
+    std::vector<STPoint2*> mTextures;
 };
 
 #endif  // __STTRIANGLEMESH_H__
