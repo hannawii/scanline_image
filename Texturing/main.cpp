@@ -28,9 +28,9 @@ std::string colorMap;
 std::string meshOBJ;
 
 // Light source attributes
-static float specularLight[] = {1.5, 1.5, 1.5, 1.5};
-static float ambientLight[]  = {0.60, 0.60, 0.60, 1.5};
-static float diffuseLight[]  = {1.20, 1.20, 1.20, 1.5};
+static float specularLight[] = {1.5, 1.5, 1.5, 1.0};
+static float ambientLight[]  = {0.90, 0.90, 0.90, 1.0};
+static float diffuseLight[]  = {1.20, 1.20, 1.20, 1.0};
 
 float lightPosition[] = {10.0f, 15.0f, 10.0f, 1.0f};
 
@@ -70,6 +70,7 @@ bool proxyType=false; // false: use cylinder; true: use sphere
 
 STTriangleMesh* gTriangleMesh = 0;
 STTriangleMesh* water = 0;
+STTriangleMesh* sky = 0;
 
 int TesselationDepth = 100;
 
@@ -109,6 +110,23 @@ void CreateYourOwnMesh()
         }
     }
     water->Build();
+    
+    sky = new STTriangleMesh();
+    
+    float bottomY = 0.f;
+    float topY = 5.5f;
+    float Z = -2.0f;
+    
+    sky->AddVertex(leftX, bottomY, Z);
+    sky->AddVertex(leftX, topY, Z);
+    sky->AddVertex(rightX, topY, Z);
+    sky->AddVertex(rightX, bottomY, Z);
+    
+    sky->AddFace(0, 1, 2);
+    sky->AddFace(2, 0, 3);
+    
+    sky->Build();
+    
 }
 //
 // Initialize the application, loading all of the settings that
@@ -255,6 +273,8 @@ void DisplayCallback()
         
         glTranslatef(0.f, -1.5f, 0.f);
         water->Draw(smooth);
+        
+        sky->Draw(smooth);
     }
 
     shader->UnBind();
