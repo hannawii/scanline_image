@@ -95,8 +95,11 @@ bool STTriangleMesh::Read(const std::string& filename)
         char token[128];
         float x,y,z;
         int p1,p2,p3;
+        int vt1,vt2,vt3;
+        int vn1,vn2,vn3;
+        char c;
+        int isVt = 0;
         float u,v,w;
-        float m, n, t;
         while(in>>token){
             if(strcmp(token,"#")==0){
                 in.getline(comments,256);
@@ -106,15 +109,27 @@ bool STTriangleMesh::Read(const std::string& filename)
                 mVertices.push_back(new STVertex(x,y,z));
             }
             else if(strcmp(token,"f")==0){
-                in>>p1>>p2>>p3;
-                mFaces.push_back(new STFace(mVertices[p1-1],mVertices[p2-1],mVertices[p3-1]));
+                if (isVt == 0) {
+                    in>>p1>>p2>>p3;
+                    mFaces.push_back(new STFace(mVertices[p1-1],mVertices[p2-1],mVertices[p3-1]));
+                } else if (isVt == 1) {
+                    in>>p1>>c>>vt1>>p2>>c>>vt2>>p3>>c>>vt3;
+                    mVertices[p1-1]->texPos = *mTextures[vt1-1];
+                    mVertices[p2-1]->texPos = *mTextures[vt2-1];
+                    mVertices[p3-1]->texPos = *mTextures[vt3-1];
+                    mFaces.push_back(new STFace(mVertices[p1-1],mVertices[p2-1],mVertices[p3-1]));
+                } else {
+                    in>>p1>>c>>vt1>>c>>vn1>>p2>>c>>vt2>>c>>vn2>>p3>>c>>vt3>>c>>vn3;
+                    mVertices[p1-1]->texPos = *mTextures[vt1-1];
+                    mVertices[p2-1]->texPos = *mTextures[vt2-1];
+                    mVertices[p3-1]->texPos = *mTextures[vt3-1];
+                    mFaces.push_back(new STFace(mVertices[p1-1],mVertices[p2-1],mVertices[p3-1]));
+                }
             }
             else if (strcmp(token, "vt") == 0) {
+                isVt = 1;
                 in>>u>>v>>w;
-            }
-            else if (strcmp(token, "vn") == 0) {
-                in>>m>>n>>t;
-                
+                mTextures.push_back(new STPoint2(u, v));
             }
 
         }
